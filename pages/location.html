@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Location — Gilead</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="../css/main.css"/>
+</head>
+<body>
+<script src="../js/shared.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded',()=>{
+  if(!Auth.guard())return;
+  renderPage('location','Location Awareness','Find nearby health facilities using GPS',`
+  <div style="max-width:700px;margin:0 auto">
+    <div class="glass fade-up" style="padding:32px;text-align:center;margin-bottom:18px">
+      <div style="width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,var(--emerald),#059669);display:flex;align-items:center;justify-content:center;margin:0 auto 18px;box-shadow:0 0 24px var(--em-glow)">
+        <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      </div>
+      <h2 style="font-family:'Syne',sans-serif;font-size:1.6rem;font-weight:800;margin-bottom:8px">Location Awareness Module</h2>
+      <p style="color:var(--muted);font-size:14px;max-width:420px;margin:0 auto 24px;line-height:1.75">Demonstrates how GPS technology can locate the nearest rural health facilities in real time.</p>
+      <button id="btn-detect" class="btn btn-em" style="padding:12px 32px">📍 Detect My Location</button>
+    </div>
+
+    <div id="loc-result" style="display:none">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
+        <div class="glass-em fade-up" style="padding:18px;text-align:center">
+          <div style="font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px">Latitude</div>
+          <div style="font-family:'Syne',sans-serif;font-size:1.6rem;font-weight:800;color:var(--em-light)" id="loc-lat">—</div>
+        </div>
+        <div class="glass-em fade-up d1" style="padding:18px;text-align:center">
+          <div style="font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px">Longitude</div>
+          <div style="font-family:'Syne',sans-serif;font-size:1.6rem;font-weight:800;color:var(--em-light)" id="loc-lng">—</div>
+        </div>
+      </div>
+      <div class="alert alert-em fade-up d1" style="margin-bottom:16px;font-size:12px" id="loc-mode"></div>
+
+      <div class="glass fade-up d2" style="padding:22px">
+        <h3 style="font-size:13px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:14px">Simulated Nearby Facilities</h3>
+        <div id="fac-list"></div>
+      </div>
+
+      <div class="alert alert-warning fade-up d3" style="margin-top:12px;font-size:11px">
+        ⚠️ Facility data is simulated for demonstration. No real facility database is accessed.
+      </div>
+    </div>
+  </div>
+  `);
+
+  const FACILITIES=[
+    {icon:'🏥',name:'Gilead Community Health Clinic',type:'Primary Care Centre',color:'#10b981'},
+    {icon:'🚑',name:'Rural Emergency Response Post',type:'Emergency Post',color:'#ef4444'},
+    {icon:'🏨',name:'District General Hospital',type:'Full Hospital',color:'#3b82f6'},
+    {icon:'💊',name:'Community Pharmacy',type:'Pharmacy',color:'#8b5cf6'},
+    {icon:'👩‍⚕️',name:'Community Health Worker Station',type:'CHW Station',color:'#f59e0b'},
+  ];
+
+  document.getElementById('btn-detect').addEventListener('click',()=>{
+    const btn=document.getElementById('btn-detect');
+    btn.textContent='Detecting…';btn.disabled=true;
+
+    const show=(lat,lng,sim)=>{
+      document.getElementById('loc-lat').textContent=lat+'°';
+      document.getElementById('loc-lng').textContent=lng+'°';
+      document.getElementById('loc-mode').textContent=sim?'📡 Using simulated location (GPS unavailable in this context)':'✅ GPS location successfully detected';
+      document.getElementById('loc-result').style.display='block';
+      document.getElementById('fac-list').innerHTML=FACILITIES.map(f=>{
+        const dist=(Math.random()*15+0.5).toFixed(1);
+        const eta=Math.round(dist*4);
+        return`<div class="facility">
+          <div class="facility-icon"><span style="font-size:20px">${f.icon}</span></div>
+          <div style="flex:1;min-width:0">
+            <div style="font-weight:600;font-size:13px">${f.name}</div>
+            <div style="font-size:11px;color:var(--muted);margin-top:2px">${f.type} · ~${eta} min drive</div>
+          </div>
+          <div style="text-align:right;flex-shrink:0">
+            <div style="font-weight:800;font-size:14px;color:${f.color}">${dist} km</div>
+            <div class="badge" style="background:${f.color}18;color:${f.color};border-color:${f.color}33;font-size:10px;margin-top:3px">Nearby</div>
+          </div>
+        </div>`;
+      }).join('');
+      btn.textContent='📍 Re-Detect';btn.disabled=false;
+      Toast.show(sim?'Showing simulated location 📍':'Location detected! 📍',sim?'warning':'success');
+    };
+
+    if(!navigator.geolocation){show('6.4531','3.3958',true);return}
+    navigator.geolocation.getCurrentPosition(
+      p=>show(p.coords.latitude.toFixed(6),p.coords.longitude.toFixed(6),false),
+      ()=>show('6.4531','3.3958',true),
+      {timeout:6000}
+    );
+  });
+});
+</script>
+</body></html>

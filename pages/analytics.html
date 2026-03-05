@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Analytics — Gilead</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<link rel="stylesheet" href="../css/main.css"/>
+</head>
+<body>
+<script src="../js/shared.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded',()=>{
+  if(!Auth.guard())return;
+  renderPage('analytics','Community Analytics','Simulated rural health data across regions',`
+  <div style="max-width:1100px;padding:0 12px">
+    <div style="display:grid;grid-template-columns:1fr;gap:16px;margin-bottom:16px;@media(min-width:768px){grid-template-columns:1fr 1fr}">
+      <div class="glass fade-up" style="padding:22px">
+        <h4 style="font-weight:700;font-size:14px;margin-bottom:4px">Wellness Distribution</h4>
+        <p style="font-size:11px;color:var(--text3);margin-bottom:16px">Community wellness across 6 rural zones</p>
+        <div style="height:200px;@media(min-width:768px){height:250px};position:relative"><canvas id="c1"></canvas></div>
+      </div>
+      <div class="glass fade-up d1" style="padding:22px">
+        <h4 style="font-weight:700;font-size:14px;margin-bottom:4px">Health Category Awareness</h4>
+        <p style="font-size:11px;color:var(--text3);margin-bottom:16px">Tips accessed per health category (%)</p>
+        <div style="height:200px;@media(min-width:768px){height:250px};position:relative"><canvas id="c2"></canvas></div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr;gap:16px;@media(min-width:768px){grid-template-columns:1fr 2fr}">
+      <div class="glass fade-up d2" style="padding:22px">
+        <h4 style="font-weight:700;font-size:14px;margin-bottom:4px">Monthly Engagement</h4>
+        <p style="font-size:11px;color:var(--text3);margin-bottom:16px">Active users over 12 months</p>
+        <div style="height:200px;@media(min-width:768px){height:220px};position:relative"><canvas id="c3"></canvas></div>
+      </div>
+      <div class="glass fade-up d3" style="padding:22px">
+        <h4 style="font-weight:700;font-size:14px;margin-bottom:4px">BMI Distribution Across Communities</h4>
+        <p style="font-size:11px;color:var(--text3);margin-bottom:16px">Aggregated BMI category spread (%)</p>
+        <div style="height:200px;@media(min-width:768px){height:220px};position:relative"><canvas id="c4"></canvas></div>
+      </div>
+    </div>
+  </div>
+  `);
+
+  const G={text:'rgba(240,253,244,.45)',grid:'rgba(255,255,255,.05)'};
+  const cfg=(type)=>({responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:G.text,font:{family:'Instrument Sans',size:11},boxWidth:12,padding:12}}},
+    ...(type!=='doughnut'?{scales:{x:{ticks:{color:G.text,font:{family:'Instrument Sans',size:10}},grid:{color:G.grid}},y:{ticks:{color:G.text,font:{family:'Instrument Sans',size:10}},grid:{color:G.grid}}}}:{})});
+
+  new Chart(document.getElementById('c1'),{type:'bar',data:{
+    labels:['Zone A','Zone B','Zone C','Zone D','Zone E','Zone F'],
+    datasets:[
+      {label:'Good',data:[45,32,58,67,41,53],backgroundColor:'rgba(16,185,129,.75)',borderRadius:6},
+      {label:'Moderate',data:[30,45,25,20,38,30],backgroundColor:'rgba(245,158,11,.7)',borderRadius:6},
+      {label:'Low',data:[25,23,17,13,21,17],backgroundColor:'rgba(239,68,68,.65)',borderRadius:6}
+    ]},options:{...cfg('bar')}});
+
+  new Chart(document.getElementById('c2'),{type:'doughnut',data:{
+    labels:['Hydration','Nutrition','Hygiene','Mental Health','Rural Health'],
+    datasets:[{data:[28,22,18,20,12],backgroundColor:['#3b82f6','#10b981','#8b5cf6','#f59e0b','#34d399'],borderWidth:0,hoverOffset:8}]
+  },options:{...cfg('doughnut'),cutout:'65%'}});
+
+  new Chart(document.getElementById('c3'),{type:'line',data:{
+    labels:['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+    datasets:[{label:'Users',data:[850,1100,1350,1200,1600,2100,2400,2800,3200,3600,4100,4800],
+      borderColor:'#10b981',backgroundColor:'rgba(16,185,129,.07)',fill:true,tension:.42,
+      pointRadius:4,pointBackgroundColor:'#10b981',pointBorderColor:'#050e08',pointBorderWidth:2}]
+  },options:{...cfg('line'),plugins:{legend:{display:false}}}});
+
+  new Chart(document.getElementById('c4'),{type:'bar',data:{
+    labels:['Underweight\n<18.5','Normal\n18.5–24.9','Overweight\n25–29.9','Obese I\n30–34.9','Obese II\n35+'],
+    datasets:[{label:'Community %',data:[8,42,28,14,8],
+      backgroundColor:['#60a5fa','#10b981','#f59e0b','#f97316','#ef4444'],
+      borderRadius:8,borderSkipped:false}]
+  },options:{...cfg('bar'),plugins:{legend:{display:false}},
+    scales:{x:{ticks:{maxRotation:0,color:G.text},grid:{display:false}},y:{ticks:{callback:v=>v+'%',color:G.text},grid:{color:G.grid}}}}});
+});
+</script>
+</body></html>

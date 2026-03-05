@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Emergency Help — Gilead</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="../css/main.css"/>
+<style>
+.em-stage{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:340px;text-align:center;padding:32px 20px}
+/* ACTIVATED STATE */
+.em-activated .em-btn{
+  background:radial-gradient(circle at 38% 35%,#4ade80,#10b981,#065f46) !important;
+  box-shadow:0 0 50px rgba(16,185,129,.7),0 0 90px rgba(16,185,129,.25) !important;
+}
+.em-activated .em-ring{border-color:rgba(16,185,129,.5) !important}
+.on-way-msg{
+  display:none;opacity:0;
+  background:linear-gradient(135deg,rgba(16,185,129,.12),rgba(16,185,129,.05));
+  border:1px solid var(--border2);border-radius:var(--r-lg);padding:28px;
+  text-align:center;
+  animation:fade-up .5s var(--ease) forwards;
+}
+.on-way-msg.show{display:block;opacity:1}
+
+@media (min-width:768px){
+  .em-stage{padding:32px}
+}
+</style>
+</head>
+<body>
+<script src="../js/shared.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded',()=>{
+  if(!Auth.guard())return;
+
+  renderPage('emergency','Emergency Help','⚠️ Prototype demonstration — no real services contacted',`
+  <div style="max-width:820px;margin:0 auto;padding:16px">
+    <div class="alert alert-red" style="margin-bottom:20px">
+      ⚠️ <strong>DEMONSTRATION ONLY</strong> — This does NOT contact real emergency services. No 911/112/999 calls are made. For real emergencies, call your local emergency number immediately.
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr;gap:20px;row-gap:24px;@media(min-width:768px){grid-template-columns:1fr 1fr}">
+
+      <!-- BUTTON PANEL -->
+      <div class="glass fade-up" style="padding:0;overflow:hidden">
+        <!-- Default state -->
+        <div class="em-stage" id="stage-default">
+          <div style="font-size:13px;color:var(--muted);margin-bottom:24px;max-width:260px;line-height:1.7">This simulates how an emergency health alert system would work in a rural community setting.</div>
+          <div class="em-btn-wrap" id="em-wrap">
+            <div class="em-ring"></div>
+            <div class="em-ring"></div>
+            <div class="em-ring"></div>
+            <button class="em-btn" id="em-btn">
+              <svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.93 9.1 19.79 19.79 0 01.88 .5 2 2 0 012.85.5h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L7.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+              <div class="em-btn-text">HELP</div>
+            </button>
+          </div>
+          <div style="margin-top:22px;font-size:12px;color:var(--text3)">Press and hold for 1 second to activate</div>
+        </div>
+
+        <!-- Activated state -->
+        <div class="em-stage" id="stage-active" style="display:none">
+          <div class="em-btn-wrap" id="em-wrap-active" style="margin-bottom:24px">
+            <div class="em-ring" style="border-color:rgba(16,185,129,.4)"></div>
+            <div class="em-ring" style="border-color:rgba(16,185,129,.4);animation-delay:.8s"></div>
+            <div class="em-ring" style="border-color:rgba(16,185,129,.4);animation-delay:1.6s"></div>
+            <div class="em-btn" style="background:radial-gradient(circle at 38% 35%,#4ade80,#10b981,#065f46);box-shadow:0 0 50px rgba(16,185,129,.6)">
+              <svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+              <div class="em-btn-text">SENT</div>
+            </div>
+          </div>
+          <div style="font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:800;color:var(--em-light);margin-bottom:6px">Help is on the way!</div>
+          <div style="font-size:13px;color:var(--muted);max-width:240px;line-height:1.7">Stay calm. A health responder has been notified and is en route to your location.</div>
+          <button onclick="resetEmergency()" class="btn btn-ghost btn-sm" style="margin-top:16px">Reset Simulation</button>
+        </div>
+      </div>
+
+      <!-- STEPS PANEL -->
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <!-- Response sequence -->
+        <div class="glass fade-up d1" style="padding:16px;@media(min-width:768px){padding:22px}">
+          <h3 style="font-size:13px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:14px">Response Simulation</h3>
+          <div id="step-list" style="display:flex;flex-direction:column;gap:6px">
+            <div class="step-item" id="step-1">
+              <div class="step-dot"></div>
+              <div>
+                <div style="font-size:13px;font-weight:600">Signal transmission</div>
+                <div style="font-size:11px;color:var(--muted);margin-top:2px">Connecting to Gilead rural health network…</div>
+              </div>
+            </div>
+            <div class="step-item" id="step-2">
+              <div class="step-dot"></div>
+              <div>
+                <div style="font-size:13px;font-weight:600">Location pinpointed</div>
+                <div style="font-size:11px;color:var(--muted);margin-top:2px" id="step-2-loc">Acquiring GPS signal…</div>
+              </div>
+            </div>
+            <div class="step-item" id="step-3">
+              <div class="step-dot"></div>
+              <div>
+                <div style="font-size:13px;font-weight:600">Responder dispatched</div>
+                <div style="font-size:11px;color:var(--muted);margin-top:2px" id="step-3-eta">Calculating nearest health worker…</div>
+              </div>
+            </div>
+            <div class="step-item" id="step-4">
+              <div class="step-dot"></div>
+              <div>
+                <div style="font-size:13px;font-weight:600">Community alert sent</div>
+                <div style="font-size:11px;color:var(--muted);margin-top:2px">Notifying local volunteers and clinic…</div>
+              </div>
+            </div>
+            <div class="step-item" id="step-5">
+              <div class="step-dot"></div>
+              <div>
+                <div style="font-size:13px;font-weight:600">Help is on the way</div>
+                <div style="font-size:11px;color:var(--em-light);margin-top:2px" id="step-5-msg">Stay calm, stay safe.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- What to do while waiting -->
+        <div class="glass fade-up d2" style="padding:16px;@media(min-width:768px){padding:22px}">
+          <h3 style="font-size:13px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px">While You Wait</h3>
+          <div style="display:flex;flex-direction:column;gap:9px">
+            ${['Stay calm and breathe slowly','Move to an open, accessible location','Unlock your door if possible','Call out to neighbours if safe to do so','Do not eat or drink if unsure of injury','Keep your phone battery charged'].map((t,i)=>`
+            <div style="display:flex;align-items:flex-start;gap:10px;font-size:12px;color:var(--muted);line-height:1.5">
+              <div style="width:20px;height:20px;border-radius:50%;background:var(--em-dim);border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:var(--em-light);flex-shrink:0">${i+1}</div>
+              ${t}
+            </div>`).join('')}
+          </div>
+        </div>
+
+        <!-- Emergency contacts -->
+        <div class="glass-em fade-up d3" style="padding:16px;@media(min-width:768px){padding:18px}">
+          <div style="font-size:12px;font-weight:700;color:var(--em-light);margin-bottom:10px">🆘 Real Emergency Numbers (Nigeria)</div>
+          <div style="display:grid;grid-template-columns:2fr 2fr;gap:8px;@media(min-width:768px){grid-template-columns:1fr 1fr}">
+            ${[['Police','112'],['NEMA','080-8000'],['Fire Svc','01-7944949'],['Red Cross','080-8000']].map(([l,n])=>`
+            <div style="background:var(--surface);border-radius:var(--r-sm);padding:10px;text-align:center">
+              <div style="font-size:10px;color:var(--text3)">${l}</div>
+              <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:16px;color:var(--em-light)">${n}</div>
+            </div>`).join('')}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  `);
+
+  /* ── EMERGENCY LOGIC ─────────────────────────────────────── */
+  let holdTimer=null;
+  let activated=false;
+
+  const btn=document.getElementById('em-btn');
+  if(!btn)return;
+
+  function startHold(){
+    if(activated)return;
+    holdTimer=setTimeout(activate,800);
+    btn.style.transform='scale(.94)';
+  }
+  function cancelHold(){
+    clearTimeout(holdTimer);btn.style.transform='';
+  }
+
+  btn.addEventListener('mousedown',startHold);
+  btn.addEventListener('touchstart',e=>{e.preventDefault();startHold()});
+  btn.addEventListener('mouseup',cancelHold);
+  btn.addEventListener('touchend',cancelHold);
+  btn.addEventListener('mouseleave',cancelHold);
+
+  function activate(){
+    if(activated)return;
+    activated=true;
+    document.getElementById('stage-default').style.display='none';
+    document.getElementById('stage-active').style.display='flex';
+
+    // Get location
+    const setLoc=(lat,lng)=>document.getElementById('step-2-loc').textContent=`Detected: ${lat}°, ${lng}°`;
+    navigator.geolocation?.getCurrentPosition(
+      p=>setLoc(p.coords.latitude.toFixed(4),p.coords.longitude.toFixed(4)),
+      ()=>setLoc('6.4531°','3.3958°')
+    );
+
+    // Step sequence
+    const steps=['step-1','step-2','step-3','step-4','step-5'];
+    steps.forEach((id,i)=>{
+      setTimeout(()=>{
+        const el=document.getElementById(id);
+        if(!el)return;
+        el.classList.add('active');
+        if(i===2)document.getElementById('step-3-eta').textContent='Nearest responder: ~6 minutes ETA';
+        if(i===4){
+          el.classList.remove('active');el.classList.add('done');
+          document.getElementById('step-5-msg').textContent='✅ Help is confirmed. Stay calm.';
+        } else setTimeout(()=>{el.classList.remove('active');el.classList.add('done')},900);
+      },i*1100);
+    });
+
+    Toast.show('Emergency signal sent! Help is on the way 🚨','warning',6000);
+  }
+
+  window.resetEmergency=function(){
+    activated=false;
+    document.getElementById('stage-default').style.display='flex';
+    document.getElementById('stage-active').style.display='none';
+    ['step-1','step-2','step-3','step-4','step-5'].forEach(id=>{
+      const el=document.getElementById(id);if(el){el.classList.remove('active','done')}
+    });
+    document.getElementById('step-2-loc').textContent='Acquiring GPS signal…';
+    document.getElementById('step-3-eta').textContent='Calculating nearest health worker…';
+    document.getElementById('step-5-msg').textContent='Stay calm, stay safe.';
+  };
+});
+</script>
+</body>
+</html>

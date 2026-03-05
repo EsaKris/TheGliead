@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Wellness Assessment — Gilead</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="../css/main.css"/>
+</head>
+<body>
+<script src="../js/shared.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded',()=>{
+  if(!Auth.guard())return;
+
+  renderPage('wellness','Wellness Assessment','Full wellness score based on multiple metrics',`
+  <div style="display:grid;grid-template-columns:1fr;gap:16px;max-width:1100px;padding:0 16px">
+
+    <!-- FORM -->
+    <div class="glass fade-up" style="padding:20px;@media(min-width:640px){padding:28px}">
+      <div class="tag" style="margin-bottom:16px">Multi-Factor Analysis</div>
+      <h2 style="font-family:'Syne',sans-serif;font-size:1.25rem;font-weight:800;margin-bottom:6px;@media(min-width:640px){font-size:1.5rem}">Your Wellness Check</h2>
+      <p style="color:var(--muted);font-size:13px;margin-bottom:20px;line-height:1.7">We combine BMI, waist ratio, activity, and age to create your personalised wellness score.</p>
+
+      <form id="wform" style="display:flex;flex-direction:column;gap:14px">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <div class="form-group">
+            <label class="form-label">Weight (kg)</label>
+            <input type="number" id="w-wt" class="form-input" placeholder="70" min="20" max="300" step="0.1" required/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Height (m)</label>
+            <input type="number" id="w-ht" class="form-input" placeholder="1.72" min="0.5" max="2.5" step="0.01" required/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Waist (cm)</label>
+            <input type="number" id="w-wc" class="form-input" placeholder="80" min="30" max="200" step="0.5" required/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Age</label>
+            <input type="number" id="w-age" class="form-input" placeholder="30" min="10" max="120" required/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Activity Level</label>
+          <select id="w-act" class="form-input form-select">
+            <option value="sedentary">Sedentary</option>
+            <option value="light">Lightly Active</option>
+            <option value="moderate" selected>Moderately Active</option>
+            <option value="active">Very Active</option>
+            <option value="athlete">Athlete</option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-em btn-block" style="padding:12px;margin-top:4px">Calculate →</button>
+      </form>
+
+      <!-- How it works -->
+      <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border)">
+        <div style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px">How We Calculate</div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          ${[['BMI','Weight ÷ Height²','50%'],['WHR','Waist ÷ Height','20%'],['Activity','Exercise','20%'],['Age','Life stage','10%']].map(([k,v,w])=>`
+          <div style="display:flex;align-items:center;gap:10px;padding:8px;background:var(--surface);border-radius:var(--r-sm);font-size:12px">
+            <div style="width:5px;height:5px;border-radius:50%;background:var(--emerald);flex-shrink:0"></div>
+            <div style="flex:1">
+              <span style="font-weight:700;color:var(--em-light)">${k}</span>
+              <span style="color:var(--muted);margin-left:6px;font-size:11px">${v}</span>
+            </div>
+            <span class="badge badge-em" style="font-size:9px">${w}</span>
+          </div>`).join('')}
+        </div>
+      </div>
+    </div>
+
+    <!-- RESULTS -->
+    <div style="display:flex;flex-direction:column;gap:12px;@media(min-width:768px){grid-column:auto}">
+      <div class="glass fade-up d1" style="padding:20px">
+        <h3 style="font-family:'Syne',sans-serif;font-size:14px;font-weight:700;margin-bottom:16px">Wellness Score</h3>
+        <div style="display:flex;flex-direction:column;gap:16px;margin-bottom:16px;@media(min-width:640px){flex-direction:row;align-items:center;gap:20px}">
+          <div class="ring-outer" id="ring" style="flex-shrink:0">
+            <div class="ring-inner">
+              <div style="font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:800;color:var(--em-light)" id="r-score">—</div>
+              <div style="font-size:9px;color:var(--text3)">/100</div>
+            </div>
+          </div>
+          <div style="flex:1">
+            <div style="font-weight:700;font-size:14px" id="r-label">Awaiting data</div>
+            <div style="font-size:12px;color:var(--muted);margin-top:5px;line-height:1.55" id="r-desc">Fill in the form and click Calculate.</div>
+          </div>
+        </div>
+        <div class="prog-track" style="margin-bottom:6px">
+          <div class="prog-fill" id="r-prog" style="width:0%"></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:9px;color:var(--text3)">
+          <span>Low (0–40)</span><span>Moderate (41–70)</span><span>Good (71+)</span>
+        </div>
+      </div>
+
+      <div class="glass fade-up d2" style="padding:18px">
+        <h3 style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;margin-bottom:12px">Metrics</h3>
+        <div id="metrics" style="font-size:12px">
+          <div class="metric-row"><div class="metric-label">BMI Value</div><div class="metric-val" id="r-bmi">—</div></div>
+          <div class="metric-row"><div class="metric-label">BMI Category</div><div id="r-bmi-cat">—</div></div>
+          <div class="metric-row"><div class="metric-label">WHR</div><div class="metric-val" id="r-whr">—</div></div>
+          <div class="metric-row"><div class="metric-label">Status</div><div id="r-whr-st">—</div></div>
+          <div class="metric-row"><div class="metric-label">Activity</div><div class="metric-val" id="r-act">—</div></div>
+          <div class="metric-row"><div class="metric-label">Age Group</div><div class="metric-val" id="r-age">—</div></div>
+        </div>
+      </div>
+
+      <div class="glass-em fade-up d3" style="padding:16px;display:none" id="advice-card">
+        <div style="font-size:12px;font-weight:700;color:var(--em-light);margin-bottom:8px">💡 Advice</div>
+        <p style="font-size:12px;color:var(--muted);line-height:1.6" id="r-advice"></p>
+      </div>
+    </div>
+  </div>
+  `);
+
+  // [Calculation logic remains the same]
+  const ACT={sedentary:0,light:8,moderate:16,active:22,athlete:18};
+  function ageGroup(a){
+    if(a<20)return{mod:5,label:'Youth'};
+    if(a<35)return{mod:10,label:'Young Adult'};
+    if(a<50)return{mod:8,label:'Adult'};
+    if(a<65)return{mod:5,label:'Middle Age'};
+    return{mod:3,label:'Senior'};
+  }
+  function classifyBMI(b){
+    if(b<18.5)return{label:'Underweight',color:'#60a5fa',score:38};
+    if(b<25)return{label:'Normal Weight',color:'#10b981',score:82};
+    if(b<30)return{label:'Overweight',color:'#f59e0b',score:52};
+    return{label:'Obese',color:'#ef4444',score:26};
+  }
+  function classifyWHR(r){
+    if(r<0.5)return{label:'✅ Healthy',color:'#10b981'};
+    if(r<0.6)return{label:'⚠️ Monitor',color:'#f59e0b'};
+    return{label:'🔴 Caution',color:'#ef4444'};
+  }
+  function scoreLabel(s){
+    if(s<=40)return{label:'Low Wellness',color:'#ef4444',advice:'Focus on building small consistent habits. Walking daily and staying hydrated are great first steps.'};
+    if(s<=70)return{label:'Moderate Balance',color:'#f59e0b',advice:'Good progress! Keep improving gradually. Small changes create lasting health.'};
+    return{label:'Good Balance',color:'#10b981',advice:'Excellent! Maintain your healthy balance and monitor regularly.'};
+  }
+  const ADVICE={
+    'Underweight':'Increase caloric intake with nutritious foods. Consult a health professional if this persists.',
+    'Normal Weight':'You are in a healthy range. Maintain with regular activity and balanced meals.',
+    'Overweight':'Gradually increase daily movement and reduce processed foods. Small changes make a difference.',
+    'Obese':'Meaningful lifestyle changes are needed. Increase movement, improve diet, and consult a professional.'
+  };
+
+  document.getElementById('wform').addEventListener('submit',e=>{
+    e.preventDefault();
+    const wt=parseFloat(document.getElementById('w-wt').value);
+    const ht=parseFloat(document.getElementById('w-ht').value);
+    const wc=parseFloat(document.getElementById('w-wc').value);
+    const age=parseInt(document.getElementById('w-age').value);
+    const act=document.getElementById('w-act').value;
+    if(!wt||!ht||!wc||!age){Toast.show('Please fill in all fields.','error');return}
+
+    const bmiVal=+(wt/(ht*ht)).toFixed(1);
+    const whrVal=+(wc/(ht*100)).toFixed(3);
+    const bmiC=classifyBMI(bmiVal);
+    const whrC=classifyWHR(whrVal);
+    const actScore=ACT[act]||0;
+    const ageG=ageGroup(age);
+    const raw=Math.min(100,Math.max(0,Math.round(bmiC.score*.5+actScore*.3+ageG.mod*.2)));
+    const sM=scoreLabel(raw);
+
+    const deg=Math.round(raw/100*360);
+    document.getElementById('ring').style.background=`conic-gradient(${sM.color} ${deg}deg,rgba(255,255,255,.06) ${deg}deg)`;
+    document.getElementById('ring').style.boxShadow=`0 0 20px ${sM.color}55`;
+    document.getElementById('r-score').textContent=raw;
+    document.getElementById('r-score').style.color=sM.color;
+    document.getElementById('r-label').textContent=sM.label;
+    document.getElementById('r-desc').textContent=sM.advice;
+    document.getElementById('r-prog').style.width=raw+'%';
+    document.getElementById('r-prog').style.background=`linear-gradient(90deg,${sM.color},${sM.color}99)`;
+    document.getElementById('r-bmi').textContent=bmiVal;
+    document.getElementById('r-bmi-cat').innerHTML=`<span style="background:${bmiC.color}18;color:${bmiC.color};border:1px solid ${bmiC.color}33;padding:2px 10px;border-radius:99px;font-size:10px;font-weight:700">${bmiC.label}</span>`;
+    document.getElementById('r-whr').textContent=whrVal;
+    document.getElementById('r-whr-st').innerHTML=`<span style="font-size:11px;font-weight:600;color:${whrC.color}">${whrC.label}</span>`;
+    document.getElementById('r-act').textContent=act.charAt(0).toUpperCase()+act.slice(1);
+    document.getElementById('r-age').textContent=ageG.label;
+    document.getElementById('r-advice').textContent=ADVICE[bmiC.label];
+    document.getElementById('advice-card').style.display='block';
+    History.add({score:raw,scoreLabel:sM.label,color:sM.color,bmi:bmiVal,bmiLabel:bmiC.label,whr:whrVal,date:new Date().toLocaleDateString()});
+    Toast.show('Score calculated! 🌿');
+  });
+});
+</script>
+</body></html>

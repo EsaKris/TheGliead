@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Create Account — Gilead Health Connect</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="../css/main.css"/>
+<style>
+.auth-grid{display:grid;min-height:100vh;grid-template-columns:1fr 1fr}
+.auth-right{background:linear-gradient(160deg,#020c04 0%,#041a09 40%,#062112 100%);position:relative;overflow:hidden;padding:48px 52px;display:flex;flex-direction:column;justify-content:center}
+.auth-left{background:#050e08;display:flex;align-items:center;justify-content:center;padding:48px 52px;position:relative}
+.auth-left::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,var(--emerald),transparent)}
+.grid-lines{position:absolute;inset:0;background-image:linear-gradient(rgba(16,185,129,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(16,185,129,.04) 1px,transparent 1px);background-size:48px 48px;pointer-events:none}
+@media(max-width:900px){.auth-grid{grid-template-columns:1fr}.auth-right{display:none}}
+</style>
+</head>
+<body>
+<div id="toasts"></div>
+<div class="auth-grid">
+
+  <!-- LEFT FORM -->
+  <div class="auth-left">
+    <div style="width:100%;max-width:380px">
+      <div class="fade-up" style="margin-bottom:28px">
+        <div class="tag" style="margin-bottom:16px">Free Forever</div>
+        <h2 style="font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;margin-bottom:7px">Join the Community</h2>
+        <p style="color:var(--muted);font-size:14px">Create your wellness account in seconds.</p>
+      </div>
+
+      <form id="reg-form" class="fade-up d1" style="display:flex;flex-direction:column;gap:14px">
+        <div class="form-group">
+          <label class="form-label">Full Name</label>
+          <input type="text" id="r-name" class="form-input" placeholder="Your full name" autocomplete="name"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email Address</label>
+          <input type="email" id="r-email" class="form-input" placeholder="you@example.com" autocomplete="email"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <div class="pw-wrap">
+            <input type="password" id="r-pw" class="form-input" placeholder="Min. 6 characters" style="padding-right:42px" autocomplete="new-password"/>
+            <button type="button" class="pw-eye" onclick="togglePw('r-pw')">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
+          <!-- Strength bar -->
+          <div style="height:3px;background:var(--surface2);border-radius:99px;margin-top:6px;overflow:hidden">
+            <div id="pw-bar" style="height:100%;width:0;border-radius:99px;transition:all .3s;background:var(--emerald)"></div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Confirm Password</label>
+          <input type="password" id="r-confirm" class="form-input" placeholder="Repeat password" autocomplete="new-password"/>
+        </div>
+        <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;margin-top:4px">
+          <input type="checkbox" id="r-terms" style="accent-color:var(--emerald);margin-top:2px;flex-shrink:0"/>
+          <span style="font-size:12px;color:var(--muted);line-height:1.55">I understand this is a <strong style="color:var(--text)">prototype platform</strong> and does not provide real medical advice or emergency services.</span>
+        </label>
+        <button type="submit" class="btn btn-em btn-block" style="padding:13px;margin-top:4px">Create Free Account →</button>
+      </form>
+
+      <p class="fade-up d2" style="text-align:center;margin-top:18px;font-size:13px;color:var(--muted)">
+        Already have one? <a href="login.html" style="color:var(--em-light);font-weight:600">Sign in →</a>
+      </p>
+      <p style="text-align:center;margin-top:8px;font-size:12px">
+        <a href="../index.html" style="color:var(--text3)">← Back to home</a>
+      </p>
+    </div>
+  </div>
+
+  <!-- RIGHT VISUAL -->
+  <div class="auth-right">
+    <div class="grid-lines"></div>
+    <div class="orb" style="width:380px;height:380px;background:rgba(16,185,129,.05);top:-60px;left:-80px"></div>
+
+    <div style="position:relative;z-index:1">
+      <div class="logo-mark" style="margin-bottom:40px">
+        <div class="logo-icon" style="width:44px;height:44px;border-radius:12px">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </div>
+        <div>
+          <div style="font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:#fff">Gilead</div>
+          <div style="font-size:10px;color:var(--text3);letter-spacing:.1em;text-transform:uppercase">Health Connect</div>
+        </div>
+      </div>
+      <h2 style="font-family:'Syne',sans-serif;font-size:2.2rem;font-weight:800;color:#fff;line-height:1.2;margin-bottom:12px">Everything You<br/><span style="color:var(--em-light)">Need. Free.</span></h2>
+      <p style="color:var(--muted);font-size:15px;margin-bottom:32px;line-height:1.72">Your account unlocks a complete digital wellness suite built for communities that need it most.</p>
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        ${['📊 Wellness & BMI Assessment Tools','🚨 Emergency Response Simulator','💡 Voice-Enabled Health Tips Library','📍 GPS Location & Nearby Facilities','🎴 Downloadable QR Health Card','📈 Community Analytics Dashboard'].map(t=>`
+        <div style="display:flex;align-items:center;gap:12px">
+          <div style="width:28px;height:28px;border-radius:50%;background:var(--em-dim);border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--em-light)" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <span style="font-size:14px;color:rgba(240,253,244,.75)">${t}</span>
+        </div>`).join('')}
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="../js/shared.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded',()=>{
+  if(Auth.init())location.href='dashboard.html';
+  document.getElementById('r-pw').addEventListener('input',function(){
+    const v=this.value;const bar=document.getElementById('pw-bar');
+    let w=0;let c='#ef4444';
+    if(v.length>=6){w=33;c='#ef4444'}
+    if(v.length>=8){w=66;c='#f59e0b'}
+    if(v.length>=10&&/[A-Z]/.test(v)&&/\d/.test(v)){w=100;c='#10b981'}
+    bar.style.width=w+'%';bar.style.background=c;
+  });
+  document.getElementById('reg-form').addEventListener('submit',e=>{
+    e.preventDefault();
+    if(!document.getElementById('r-terms').checked){Toast.show('Please accept the terms.','warning');return}
+    const r=Auth.register(
+      document.getElementById('r-name').value,
+      document.getElementById('r-email').value,
+      document.getElementById('r-pw').value,
+      document.getElementById('r-confirm').value
+    );
+    if(r.ok){Toast.show(`Welcome, ${r.user.name.split(' ')[0]}! 🌿`);setTimeout(()=>location.href='dashboard.html',600)}
+    else Toast.show(r.err,'error');
+  });
+});
+</script>
+</body></html>

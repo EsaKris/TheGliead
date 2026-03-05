@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>QR Health Card — Gilead</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+<link rel="stylesheet" href="../css/main.css"/>
+<style>
+  @media (max-width: 768px) {
+    .qr-grid { grid-template-columns: 1fr !important; }
+    .qr-frame { max-width: 100%; }
+  }
+</style>
+</head>
+<body>
+<script src="../js/shared.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded',()=>{
+  if(!Auth.guard())return;
+  const user=Auth.current;
+
+  renderPage('qr','QR Health Card','Your unique digital health identity card',`
+  <div style="max-width:860px;margin:0 auto;padding:16px">
+    <div class="qr-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start">
+
+      <!-- QR DISPLAY -->
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <div class="glass fade-up" style="padding:24px;text-align:center">
+          <div class="tag" style="margin-bottom:18px;display:inline-flex">Digital Health Identity</div>
+
+          <!-- The real QR code -->
+          <div style="display:flex;justify-content:center;margin-bottom:20px;overflow-x:auto">
+            <div class="qr-frame" style="flex-shrink:0">
+              <div class="qr-logo-bar">
+                <div style="width:22px;height:22px;background:#052e16;border-radius:6px;display:flex;align-items:center;justify-content:center">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="3" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                </div>
+                <span>Gilead Health Connect</span>
+              </div>
+              <canvas id="qr-canvas" width="200" height="200" style="max-width:100%;height:auto;display:block"></canvas>
+              <div style="font-size:10px;color:#4d7c60;text-align:center;font-family:monospace;margin-top:8px" id="qr-id-label">GHC-XXXXXX</div>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+            <button id="btn-dl" class="btn btn-em btn-sm">⬇ Download</button>
+            <button id="btn-regen" class="btn btn-ghost btn-sm">🔄 Regenerate</button>
+          </div>
+        </div>
+
+        <!-- Card info -->
+        <div class="glass fade-up d1" style="padding:22px">
+          <h3 style="font-size:13px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:14px">Card Information</h3>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r-sm);padding:11px 14px">
+              <div style="font-size:10px;color:var(--text3);margin-bottom:3px;text-transform:uppercase;letter-spacing:.06em">Platform</div>
+              <div style="font-weight:600;font-size:13px">Gilead Rural Health Connect</div>
+            </div>
+            <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r-sm);padding:11px 14px">
+              <div style="font-size:10px;color:var(--text3);margin-bottom:3px;text-transform:uppercase;letter-spacing:.06em">Member Name</div>
+              <div style="font-weight:600;font-size:13px;word-break:break-word" id="info-name">${user.name}</div>
+            </div>
+            <div style="background:var(--surface);border:1px solid var(--border2);border-radius:var(--r-sm);padding:11px 14px">
+              <div style="font-size:10px;color:var(--text3);margin-bottom:3px;text-transform:uppercase;letter-spacing:.06em">Health ID</div>
+              <div style="font-weight:700;font-size:14px;color:var(--em-light);font-family:monospace;word-break:break-all" id="info-hid">—</div>
+            </div>
+            <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r-sm);padding:11px 14px">
+              <div style="font-size:10px;color:var(--text3);margin-bottom:3px;text-transform:uppercase;letter-spacing:.06em">Wellness Reference</div>
+              <div style="font-weight:600;font-size:13px;font-family:monospace;word-break:break-all" id="info-ref">—</div>
+            </div>
+            <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r-sm);padding:11px 14px">
+              <div style="font-size:10px;color:var(--text3);margin-bottom:3px;text-transform:uppercase;letter-spacing:.06em">Generated</div>
+              <div style="font-weight:600;font-size:13px" id="info-date">—</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: How to use + share -->
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <!-- Share preview -->
+        <div class="glass-em fade-up" style="padding:24px">
+          <h3 style="font-family:'Syne',sans-serif;font-size:16px;font-weight:700;margin-bottom:14px">How to Use Your QR Card</h3>
+          <div style="display:flex;flex-direction:column;gap:12px">
+            ${[
+              ['🏥','At a health clinic','Show your QR code to health workers for quick ID verification and record lookup.'],
+              ['🤝','With community volunteers','Share with local health volunteers to register in your community wellness database.'],
+              ['📱','On your phone','Screenshot and save it to your phone\'s gallery for offline access anywhere.'],
+              ['👨‍👩‍👧','For family members','Each family member should generate their own unique health card.'],
+              ['🔄','Regenerate anytime','Your QR data is linked to your account — regenerate as often as needed.']
+            ].map(([icon,title,desc])=>`
+            <div style="display:flex;gap:12px">
+              <div style="width:36px;height:36px;background:var(--em-dim);border:1px solid var(--border2);border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px">${icon}</div>
+              <div>
+                <div style="font-size:13px;font-weight:600;margin-bottom:2px">${title}</div>
+                <div style="font-size:12px;color:var(--muted);line-height:1.55">${desc}</div>
+              </div>
+            </div>`).join('')}
+          </div>
+        </div>
+
+        <!-- QR data contents -->
+        <div class="glass fade-up d1" style="padding:22px">
+          <h3 style="font-size:13px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px">What the QR Contains</h3>
+          <div style="display:flex;flex-direction:column;gap:7px">
+            ${['Platform name and version','Your full name','Unique Health ID (GHC-XXXXXX)','Wellness Reference Code','Card generation date','Platform URL'].map(t=>`
+            <div style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted)">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--em-light)" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+              ${t}
+            </div>`).join('')}
+          </div>
+        </div>
+
+        <!-- Privacy note -->
+        <div class="alert alert-em fade-up d2" style="font-size:12px;line-height:1.65">
+          🔒 <strong>Privacy Note:</strong> Your QR code contains only identification information — no medical data, no location, and no passwords. It is safe to share with health workers.
+        </div>
+      </div>
+    </div>
+  </div>
+  `);
+
+  /* ── QR LOGIC ─────────────────────────────────────────────── */
+  let healthId='';let refCode='';
+
+  function genIds(){
+    healthId='GHC-'+Math.random().toString(36).substr(2,6).toUpperCase();
+    refCode='WR-'+Math.random().toString(36).substr(2,8).toUpperCase();
+  }
+
+  function generateQR(){
+    genIds();
+    const date=new Date().toLocaleDateString('en-GB');
+    const qrData=[
+      'GILEAD RURAL HEALTH CONNECT',
+      `Member: ${user.name}`,
+      `Health ID: ${healthId}`,
+      `Wellness Ref: ${refCode}`,
+      `Date: ${date}`,
+      'gilead-health.connect'
+    ].join('\n');
+
+    // Update info
+    document.getElementById('info-hid').textContent=healthId;
+    document.getElementById('info-ref').textContent=refCode;
+    document.getElementById('info-date').textContent=date;
+    document.getElementById('qr-id-label').textContent=healthId;
+
+    const canvas=document.getElementById('qr-canvas');
+
+    if(typeof QRCode!=='undefined'){
+      QRCode.toCanvas(canvas,qrData,{
+        width:200,margin:1,
+        color:{dark:'#052e16',light:'#ffffff'}
+      },err=>{
+        if(err){console.error(err);drawFallback(canvas)}
+        else Toast.show('QR card generated! 🎴');
+      });
+    } else {
+      drawFallback(canvas);
+      Toast.show('QR card generated! 🎴');
+    }
+  }
+
+  function drawFallback(canvas){
+    const ctx=canvas.getContext('2d');
+    const w=canvas.width;const h=canvas.height;
+    ctx.fillStyle='#f0fdf4';ctx.fillRect(0,0,w,h);
+    ctx.fillStyle='#052e16';ctx.font='bold 14px monospace';ctx.textAlign='center';
+    ctx.fillText('GILEAD HEALTH',w/2,h/2-10);
+    ctx.font='11px monospace';ctx.fillStyle='#166534';
+    ctx.fillText(healthId,w/2,h/2+14);
+  }
+
+  document.getElementById('btn-regen').addEventListener('click',generateQR);
+
+  document.getElementById('btn-dl').addEventListener('click',()=>{
+    const canvas=document.getElementById('qr-canvas');
+    const out=document.createElement('canvas');
+    out.width=240;out.height=260;
+    const ctx=out.getContext('2d');
+    ctx.fillStyle='#ffffff';ctx.fillRect(0,0,240,260);
+    ctx.fillStyle='#052e16';ctx.fillRect(0,0,240,36);
+    ctx.fillStyle='#4ade80';ctx.font='bold 12px sans-serif';ctx.textAlign='center';
+    ctx.fillText('GILEAD HEALTH CONNECT',120,23);
+    ctx.drawImage(canvas,20,44,200,200);
+    ctx.fillStyle='#4d7c60';ctx.font='10px monospace';
+    ctx.fillText(healthId,120,254);
+
+    const link=document.createElement('a');
+    link.download=`gilead-health-card-${healthId}.png`;
+    link.href=out.toDataURL('image/png');
+    link.click();
+    Toast.show('QR card downloaded! 📥');
+  });
+
+  generateQR();
+});
+</script>
+</body></html>

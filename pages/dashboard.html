@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Dashboard — Gilead Health Connect</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="../css/main.css"/>
+</head>
+<body>
+<script src="../js/shared.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded',()=>{
+  if(!Auth.guard())return;
+  const user=Auth.current;
+
+  const hist=History.all().slice().reverse();
+  const latest=hist[0];
+  const saved=Tips.all();
+
+  const histHTML=hist.length?hist.slice(0,5).map(r=>`
+    <div class="hist-item fade-up">
+      <div style="width:44px;height:44px;border-radius:50%;background:${r.color}18;border:2px solid ${r.color}44;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:14px;color:${r.color};flex-shrink:0">${r.score}</div>
+      <div style="flex:1;min-width:0">
+        <div style="font-weight:600;font-size:13px">${r.scoreLabel}</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:2px">BMI ${r.bmi} · ${r.bmiLabel} · ${r.date}</div>
+      </div>
+      <span class="badge" style="background:${r.color}18;color:${r.color};border-color:${r.color}33">${r.score}/100</span>
+    </div>`).join('')
+  :`<div style="text-align:center;padding:36px 20px">
+    <div style="font-size:3rem;margin-bottom:12px;opacity:.3">📊</div>
+    <div style="color:var(--muted);font-size:14px">No assessments yet.</div>
+    <a href="wellness.html" class="btn btn-em btn-sm" style="margin-top:14px;display:inline-flex">Start Your First →</a>
+  </div>`;
+
+  renderPage('overview','Dashboard Overview',fmtDate(),`
+  <!-- HERO WELCOME -->
+  <div class="glass-em fade-up" style="padding:20px 16px;margin-bottom:24px;position:relative;overflow:hidden">
+    <div class="orb" style="width:300px;height:300px;background:rgba(16,185,129,.05);right:-80px;top:-80px;animation-delay:0s"></div>
+    <div style="position:relative;z-index:1">
+      <div style="font-size:13px;color:var(--em-light);font-weight:600;margin-bottom:5px">Good day 🌿</div>
+      <h1 style="font-family:'Syne',sans-serif;font-size:clamp(1.5rem,5vw,1.9rem);font-weight:800;margin-bottom:10px">Welcome back, ${user.name.split(' ')[0]}!</h1>
+      <p style="color:var(--muted);font-size:14px;max-width:460px;line-height:1.72;margin-bottom:22px">Your wellness dashboard is ready. Take an assessment, explore health tips, or check community analytics.</p>
+      <div style="display:flex;flex-wrap:wrap;gap:10px">
+        <a href="wellness.html" class="btn btn-em btn-sm">📊 Run Assessment</a>
+        <a href="tips.html" class="btn btn-ghost btn-sm">💡 Health Tips</a>
+        <a href="emergency.html" class="btn btn-sm" style="background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.22);color:#fca5a5">🚨 Emergency</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- STAT CARDS -->
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:24px">
+    <div class="stat-card fade-up">
+      <div class="stat-icon">💪</div>
+      <div class="stat-label">Wellness Score</div>
+      <div class="stat-num">${latest?latest.score:'—'}</div>
+      <div class="stat-sub">${latest?latest.scoreLabel:'Run first assessment'}</div>
+    </div>
+    <div class="stat-card fade-up d1">
+      <div class="stat-icon">⚖️</div>
+      <div class="stat-label">BMI</div>
+      <div class="stat-num">${latest?latest.bmi:'—'}</div>
+      <div class="stat-sub">${latest?latest.bmiLabel:'Not yet calculated'}</div>
+    </div>
+    <div class="stat-card fade-up d2">
+      <div class="stat-icon">📝</div>
+      <div class="stat-label">Assessments</div>
+      <div class="stat-num">${hist.length}</div>
+      <div class="stat-sub">Total recorded</div>
+    </div>
+    <div class="stat-card fade-up d3">
+      <div class="stat-icon">💾</div>
+      <div class="stat-label">Saved Tips</div>
+      <div class="stat-num">${saved.length}</div>
+      <div class="stat-sub">In your library</div>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr;gap:16px;margin-bottom:16px;@media(min-width:768px){grid-template-columns:2fr 1fr}">
+    <!-- History -->
+    <div class="glass fade-up" style="padding:16px;@media(min-width:768px){padding:22px}">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;gap:10px">
+        <h3 style="font-family:'Syne',sans-serif;font-size:16px;font-weight:700">Recent Assessments</h3>
+        <a href="wellness.html" class="btn btn-ghost btn-sm">+ New</a>
+      </div>
+      ${histHTML}
+    </div>
+
+    <!-- Community impact + emergency alert -->
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div class="glass-em fade-up d1" style="padding:16px;@media(min-width:768px){padding:22px};text-align:center">
+        <div style="font-size:11px;color:var(--em-light);font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px">Community Reach</div>
+        <div style="font-family:'Syne',sans-serif;font-size:clamp(2rem,8vw,3rem);font-weight:800;color:var(--em-light);line-height:1" data-count="12547">0</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:6px">Users across rural zones</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px">
+          <div style="background:var(--surface);border-radius:var(--r-sm);padding:8px;text-align:center">
+            <div style="font-weight:800;color:var(--em-light);font-size:1.1rem" data-count="340">0</div>
+            <div style="font-size:10px;color:var(--text3)">Villages</div>
+          </div>
+          <div style="background:var(--surface);border-radius:var(--r-sm);padding:8px;text-align:center">
+            <div style="font-weight:800;color:var(--em-light);font-size:1.1rem" data-count="5200">0</div>
+            <div style="font-size:10px;color:var(--text3)">Tips Sent</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Emergency quick access -->
+      <a href="emergency.html" class="fade-up d2" style="background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.18);border-radius:var(--r-lg);padding:16px;@media(min-width:768px){padding:20px};display:flex;align-items:center;gap:12px;@media(min-width:768px){gap:14px};cursor:pointer;text-decoration:none;transition:all .22s var(--ease);"
+        onmouseover="this.style.background='rgba(239,68,68,.12)'"
+        onmouseout="this.style.background='rgba(239,68,68,.06)'">
+        <div style="width:46px;height:46px;border-radius:50%;background:radial-gradient(circle,#f87171,#dc2626);display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 0 18px rgba(239,68,68,.4);animation:pulse-dot 2s infinite">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+        </div>
+        <div>
+          <div style="font-weight:700;font-size:14px;color:#fca5a5">Emergency Module</div>
+          <div style="font-size:12px;color:rgba(252,165,165,.55);margin-top:2px">Tap to access emergency simulation</div>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <!-- Quick actions -->
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px;@media(min-width:640px){grid-template-columns:repeat(3,1fr)};@media(min-width:1024px){grid-template-columns:repeat(6,1fr)}" class="fade-up d3">
+    ${[
+      {href:'wellness.html',icon:'📊',label:'Wellness'},
+      {href:'bmi.html',icon:'⚖️',label:'BMI Calc'},
+      {href:'tips.html',icon:'💡',label:'Health Tips'},
+      {href:'location.html',icon:'📍',label:'Location'},
+      {href:'qr.html',icon:'🎴',label:'QR Card'},
+      {href:'analytics.html',icon:'📈',label:'Analytics'},
+    ].map(a=>`<a href="${a.href}" style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r-md);padding:12px;@media(min-width:768px){padding:14px};text-align:center;cursor:pointer;transition:all .22s var(--ease);display:block;text-decoration:none"
+      onmouseover="this.style.borderColor='var(--border2)';this.style.background='var(--surface2)'"
+      onmouseout="this.style.borderColor='var(--border)';this.style.background='var(--surface)'">
+      <div style="font-size:1.5rem;margin-bottom:5px">${a.icon}</div>
+      <div style="font-size:12px;font-weight:600;color:var(--muted)">${a.label}</div>
+    </a>`).join('')}
+  </div>
+  `);
+});
+</script>
+</body></html>

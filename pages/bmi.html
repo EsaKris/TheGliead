@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>BMI Calculator — Gilead</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="../css/main.css"/>
+<style>
+.bmi-zone{padding:10px 14px;border-radius:var(--r-sm);display:flex;align-items:center;gap:10px;margin-bottom:6px;transition:all .22s}
+.bmi-zone.active{transform:translateX(6px)}
+.bmi-needle{
+  position:absolute;bottom:0;left:50%;width:3px;height:70%;
+  background:white;border-radius:2px;transform-origin:bottom center;
+  transform:translateX(-50%) rotate(0deg);
+  transition:transform 1.2s cubic-bezier(0.34,1.56,0.64,1);
+  box-shadow:0 0 8px rgba(255,255,255,.5);
+}
+.gauge-arc{display:flex;justify-content:center;margin-bottom:24px}
+@media(max-width:768px){
+  .mobile-stack{display:grid;grid-template-columns:1fr!important;gap:20px!important;max-width:100%!important}
+  .gauge-svg{width:100%;max-width:220px;height:auto;margin:0 auto}
+  .bmi-result-text{font-size:3rem!important}
+}
+@media(max-width:480px){
+  .bmi-result-text{font-size:2.5rem!important}
+  .glass{padding:20px!important}
+  .form-label{font-size:12px!important}
+  .form-input{padding:10px!important;font-size:14px!important}
+}
+</style>
+</head>
+<body>
+<script src="../js/shared.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded',()=>{
+  if(!Auth.guard())return;
+
+  renderPage('bmi','BMI Calculator','Body Mass Index — Know your number',`
+  <div class="mobile-stack" style="display:grid;grid-template-columns:1fr 1fr;gap:20px;max-width:1000px">
+
+    <!-- INPUT -->
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <div class="glass fade-up" style="padding:28px">
+        <div class="tag" style="margin-bottom:14px">Body Mass Index</div>
+        <h2 style="font-family:'Syne',sans-serif;font-size:clamp(1.25rem,5vw,1.5rem);font-weight:800;margin-bottom:6px">Calculate Your BMI</h2>
+        <p style="color:var(--muted);font-size:13px;margin-bottom:22px;line-height:1.7">BMI is a simple measure of body weight relative to height, used as an indicator of body fatness.</p>
+
+        <!-- Unit toggle -->
+        <div style="display:flex;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-md);padding:4px;margin-bottom:20px;width:fit-content;flex-wrap:wrap">
+          <button id="btn-metric" onclick="setUnit('metric')" class="btn btn-sm btn-em" style="border-radius:var(--r-sm);white-space:nowrap">Metric (kg/m)</button>
+          <button id="btn-imperial" onclick="setUnit('imperial')" class="btn btn-sm btn-ghost" style="border-radius:var(--r-sm);white-space:nowrap">Imperial (lb/in)</button>
+        </div>
+
+        <form id="bmi-form" style="display:flex;flex-direction:column;gap:14px">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+            <div class="form-group">
+              <label class="form-label" id="lbl-wt">Weight (kg)</label>
+              <input type="number" id="b-wt" class="form-input" placeholder="70" step="0.1" min="1" required/>
+            </div>
+            <div class="form-group">
+              <label class="form-label" id="lbl-ht">Height (m)</label>
+              <input type="number" id="b-ht" class="form-input" placeholder="1.72" step="0.01" min="0.1" required/>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Gender (optional — for context)</label>
+            <select id="b-gen" class="form-input form-select">
+              <option value="">Prefer not to say</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Age (optional)</label>
+            <input type="number" id="b-age" class="form-input" placeholder="e.g. 30" min="2" max="120"/>
+          </div>
+          <button type="submit" class="btn btn-em btn-block" style="padding:13px">Calculate BMI →</button>
+        </form>
+      </div>
+
+      <!-- BMI Scale reference -->
+      <div class="glass fade-up d1" style="padding:22px">
+        <h3 style="font-size:13px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:14px">BMI Scale Reference</h3>
+        <div class="bmi-zone" id="zone-uw" style="background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.15)">
+          <div style="width:12px;height:12px;border-radius:3px;background:#60a5fa;flex-shrink:0"></div>
+          <div>
+            <div style="font-size:13px;font-weight:600;color:#60a5fa">Underweight</div>
+            <div style="font-size:11px;color:var(--muted)">BMI below 18.5</div>
+          </div>
+        </div>
+        <div class="bmi-zone" id="zone-nm" style="background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.15)">
+          <div style="width:12px;height:12px;border-radius:3px;background:#10b981;flex-shrink:0"></div>
+          <div>
+            <div style="font-size:13px;font-weight:600;color:#10b981">Normal Weight</div>
+            <div style="font-size:11px;color:var(--muted)">BMI 18.5 – 24.9</div>
+          </div>
+        </div>
+        <div class="bmi-zone" id="zone-ow" style="background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.15)">
+          <div style="width:12px;height:12px;border-radius:3px;background:#f59e0b;flex-shrink:0"></div>
+          <div>
+            <div style="font-size:13px;font-weight:600;color:#f59e0b">Overweight</div>
+            <div style="font-size:11px;color:var(--muted)">BMI 25 – 29.9</div>
+          </div>
+        </div>
+        <div class="bmi-zone" id="zone-ob" style="background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.15)">
+          <div style="width:12px;height:12px;border-radius:3px;background:#ef4444;flex-shrink:0"></div>
+          <div>
+            <div style="font-size:13px;font-weight:600;color:#ef4444">Obese</div>
+            <div style="font-size:11px;color:var(--muted)">BMI 30 and above</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RESULT -->
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <!-- Semicircle gauge -->
+      <div class="glass-em fade-up" style="padding:28px;text-align:center">
+        <h3 style="font-family:'Syne',sans-serif;font-size:15px;font-weight:700;margin-bottom:20px">Your BMI Result</h3>
+
+        <!-- Gauge -->
+        <div class="gauge-svg" style="position:relative;width:220px;height:115px;margin:0 auto 24px;overflow:hidden">
+          <svg viewBox="0 0 220 115" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
+            <path d="M 20 110 A 90 90 0 0 1 65 27" stroke="#60a5fa" stroke-width="18" fill="none" stroke-linecap="round" opacity=".5"/>
+            <path d="M 68 24 A 90 90 0 0 1 152 24" stroke="#10b981" stroke-width="18" fill="none" stroke-linecap="round" opacity=".5"/>
+            <path d="M 155 27 A 90 90 0 0 1 200 110" stroke="#f59e0b" stroke-width="18" fill="none" stroke-linecap="round" opacity=".5"/>
+            <path id="gauge-fill" d="M 20 110 A 90 90 0 0 1 65 27" stroke="#60a5fa" stroke-width="18" fill="none" stroke-linecap="round" opacity="0" style="transition:all .8s ease"/>
+            <circle cx="110" cy="110" r="8" fill="var(--bg)" stroke="var(--border2)" stroke-width="2"/>
+            <line id="gauge-needle" x1="110" y1="110" x2="110" y2="30" stroke="white" stroke-width="2.5" stroke-linecap="round" style="transform-origin:110px 110px;transform:rotate(-90deg);transition:transform 1.2s cubic-bezier(0.34,1.56,.64,1);opacity:.8"/>
+          </svg>
+        </div>
+
+        <!-- Big number -->
+        <div class="bmi-result-text" style="font-family:'Syne',sans-serif;font-size:4rem;font-weight:800;line-height:1;margin-bottom:6px" id="b-result">—</div>
+        <div class="badge" id="b-cat-badge" style="font-size:14px;padding:6px 18px">Run calculator</div>
+
+        <div style="margin-top:20px;padding:14px;background:var(--surface);border-radius:var(--r-md);text-align:left">
+          <div style="font-size:12px;color:var(--text3);margin-bottom:6px">Your BMI means</div>
+          <p style="font-size:13px;color:var(--muted);line-height:1.65" id="b-meaning">Enter your measurements above to get your BMI interpretation.</p>
+        </div>
+      </div>
+
+      <!-- Healthy range for your height -->
+      <div class="glass fade-up d1" style="padding:22px">
+        <h3 style="font-size:13px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:14px">Healthy Range For Your Height</h3>
+        <div id="healthy-range" style="font-size:14px;color:var(--muted)">Enter your height to see your healthy weight range.</div>
+      </div>
+
+      <!-- Tips -->
+      <div class="glass fade-up d2" style="padding:22px">
+        <h3 style="font-size:13px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px">Keep in Mind</h3>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          ${['BMI does not directly measure body fat — it is a screening tool, not a diagnosis.','Athletes may have a high BMI due to muscle mass, not excess fat.','Children and teens use age- and sex-specific BMI charts.','Always consult a healthcare professional for medical assessment.'].map(t=>`
+          <div style="display:flex;gap:10px;font-size:12px;color:var(--muted);line-height:1.55">
+            <span style="color:var(--em-light);flex-shrink:0;margin-top:1px">•</span>${t}
+          </div>`).join('')}
+        </div>
+      </div>
+    </div>
+  </div>
+  `);
+
+  let unit='metric';
+  window.setUnit=function(u){
+    unit=u;
+    const isM=u==='metric';
+    document.getElementById('lbl-wt').textContent=isM?'Weight (kg)':'Weight (lbs)';
+    document.getElementById('lbl-ht').textContent=isM?'Height (m)':'Height (inches)';
+    document.getElementById('b-wt').placeholder=isM?'70':'155';
+    document.getElementById('b-ht').placeholder=isM?'1.72':'68';
+    document.getElementById('btn-metric').className='btn btn-sm '+(isM?'btn-em':'btn-ghost');
+    document.getElementById('btn-imperial').className='btn btn-sm '+(isM?'btn-ghost':'btn-em');
+  };
+
+  const MEANINGS={
+    'Underweight':'Your weight is below the recommended range for your height. Consider speaking with a health professional about healthy ways to gain weight through nutrition.',
+    'Normal Weight':'Your weight is within the healthy range. Maintaining this through balanced diet and regular activity is excellent for long-term wellbeing.',
+    'Overweight':'Your weight is slightly above the healthy range. Gradual lifestyle adjustments — more movement and whole foods — can make a meaningful difference.',
+    'Obese':'Your BMI suggests significant health risk. Please consider consulting a healthcare professional for a personalised plan to improve your wellness.'
+  };
+  const ZONE_IDS={'Underweight':'zone-uw','Normal Weight':'zone-nm','Overweight':'zone-ow','Obese':'zone-ob'};
+  const COLORS={'Underweight':'#60a5fa','Normal Weight':'#10b981','Overweight':'#f59e0b','Obese':'#ef4444'};
+
+  function bmiToAngle(bmi){
+    const clamped=Math.max(15,Math.min(40,bmi));
+    return((clamped-15)/25)*180-90;
+  }
+
+  document.getElementById('bmi-form').addEventListener('submit',e=>{
+    e.preventDefault();
+    let wt=parseFloat(document.getElementById('b-wt').value);
+    let ht=parseFloat(document.getElementById('b-ht').value);
+    if(!wt||!ht){Toast.show('Please enter weight and height.','error');return}
+
+    if(unit==='imperial'){wt=wt*0.453592;ht=ht*0.0254}
+
+    const bmi=+(wt/(ht*ht)).toFixed(1);
+    let cat='Underweight';
+    if(bmi>=18.5&&bmi<25)cat='Normal Weight';
+    else if(bmi>=25&&bmi<30)cat='Overweight';
+    else if(bmi>=30)cat='Obese';
+
+    const color=COLORS[cat];
+    document.getElementById('b-result').textContent=bmi;
+    document.getElementById('b-result').style.color=color;
+    document.getElementById('b-cat-badge').textContent=cat;
+    document.getElementById('b-cat-badge').style.cssText=`background:${color}18;color:${color};border:1px solid ${color}33;padding:6px 18px;border-radius:99px;font-size:14px;font-weight:700;display:inline-flex`;
+    document.getElementById('b-meaning').textContent=MEANINGS[cat];
+
+    const angle=bmiToAngle(bmi);
+    document.getElementById('gauge-needle').style.transform=`rotate(${angle}deg)`;
+
+    const minW=(18.5*ht*ht).toFixed(1);
+    const maxW=(24.9*ht*ht).toFixed(1);
+    document.getElementById('healthy-range').innerHTML=`
+      <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+        <div style="font-size:clamp(1.3rem,4vw,1.6rem);font-weight:800;color:var(--em-light);font-family:'Syne',sans-serif">${minW} – ${maxW} kg</div>
+      </div>
+      <div style="font-size:12px;color:var(--text3);margin-top:4px">Healthy weight range for ${(ht*100).toFixed(0)} cm height</div>`;
+
+    Object.values(ZONE_IDS).forEach(z=>document.getElementById(z)?.classList.remove('active'));
+    const zId=ZONE_IDS[cat];if(zId)document.getElementById(zId).classList.add('active');
+
+    Toast.show(`BMI ${bmi} — ${cat}`,'success');
+  });
+});
+</script>
+</body></html>

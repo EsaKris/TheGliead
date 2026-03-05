@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Health Tips — Gilead</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="../css/main.css"/>
+<style>
+.cat-grid{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px}
+.reading-bar{height:3px;background:linear-gradient(90deg,var(--emerald),var(--em-light));border-radius:99px;width:0%;transition:width .15s linear}
+
+@media (max-width:768px){
+  .tips-container{grid-template-columns:1fr!important}
+  .cat-grid{gap:6px}
+  .cat-pill{font-size:13px;padding:8px 12px}
+  .btn{font-size:13px;padding:8px!important}
+  #saved-list{max-height:300px!important}
+  .saved-tip{padding:12px;font-size:11px}
+  .tip-card{min-height:100px!important}
+}
+
+@media (max-width:480px){
+  .glass{padding:16px!important}
+  .cat-grid{gap:4px}
+  .cat-pill{font-size:12px;padding:6px 10px}
+  #btn-gen,#btn-voice,#btn-save{padding:8px!important}
+  .glass-em{padding:14px!important;gap:12px!important}
+  .glass-em div:first-child{font-size:2rem!important}
+}
+</style>
+</head>
+<body>
+<script src="../js/shared.js"></script>
+<script>
+const TIPS_DB={
+  hydration:{emoji:'💧',label:'Hydration',color:'#3b82f6',tips:[
+    'Drink at least 8 glasses (2 litres) of clean water daily. Your body is 60% water — every organ depends on it.',
+    'Start every morning with a glass of warm water before eating. This activates your metabolism and flushes toxins built up overnight.',
+    'If you feel hungry between meals, drink water first. Thirst is often misread as hunger — this prevents unnecessary snacking.',
+    'Carry a reusable water bottle everywhere. Visual reminders dramatically improve daily hydration consistency.',
+    'Watermelon, cucumber, and oranges are up to 90% water. Eating them contributes significantly to your daily fluid intake.',
+    'Dark yellow urine means you are dehydrated. Aim for pale yellow to clear urine throughout the day.',
+    'Sugary drinks and sodas dehydrate more than they hydrate. Replace them with water, hibiscus tea, or lemon water.'
+  ]},
+  nutrition:{emoji:'🥗',label:'Nutrition',color:'#10b981',tips:[
+    'Eat a rainbow of vegetables daily — different colours represent different vitamins and antioxidants essential for immunity.',
+    'Include protein in every meal: beans, eggs, fish, or lean meat. Protein repairs tissues and keeps you full for longer.',
+    'Reduce salt. Excess sodium raises blood pressure. Season food with herbs, garlic, and pepper instead.',
+    'Whole grains like millet, oats, and brown rice digest slowly, giving sustained energy and supporting gut health.',
+    'Eat smaller, more frequent meals rather than 2–3 large ones. This steadies blood sugar and prevents energy crashes.',
+    'Fresh local produce is often more nutritious than processed alternatives. Support local farmers and eat seasonally.',
+    'Limit fried food to occasional treats. Steaming, boiling, or grilling preserves nutrients and reduces harmful fat.'
+  ]},
+  hygiene:{emoji:'🧼',label:'Hygiene',color:'#8b5cf6',tips:[
+    'Wash your hands with soap for 20 seconds before eating and after using the toilet. This simple habit prevents over 30% of common illnesses.',
+    'Brush your teeth twice daily. Oral health is directly connected to heart health and your immune system.',
+    'Keep living spaces ventilated. Fresh air reduces airborne pathogens and improves respiratory health for the whole family.',
+    'Store drinking water in clean, covered containers. Contaminated water is the leading cause of diarrhoeal disease in rural Africa.',
+    'Wash fruits and vegetables under running water before eating, even if they look clean on the outside.',
+    'Regular bathing removes bacteria, reduces skin infections, and supports both physical and mental wellbeing.',
+    'Dispose of waste properly. Open waste breeds mosquitoes, flies, and disease vectors that affect entire communities.'
+  ]},
+  mental:{emoji:'🧠',label:'Mental Wellness',color:'#f59e0b',tips:[
+    'Take five slow, deep breaths when feeling overwhelmed. This activates the parasympathetic nervous system and reduces cortisol.',
+    'Spend at least 20 minutes outdoors in natural light daily. Sunlight regulates mood and significantly boosts vitamin D levels.',
+    'Talk to someone you trust when struggling. Sharing your burden is not weakness — it is wisdom and strength.',
+    'Keep a consistent sleep schedule. Waking and sleeping at the same time daily regulates your body clock and sharpens focus.',
+    'Limit exposure to stressful news and social media. What you allow into your mind shapes your emotional reality.',
+    'Celebrate small wins. Recognising your daily progress, however small, builds resilience and positive momentum.',
+    'Gratitude rewires the brain. Name three things you are thankful for each morning to shift your mindset toward abundance.'
+  ]},
+  rural:{emoji:'🌾',label:'Rural Health',color:'#10b981',tips:[
+    'Malaria and typhoid are preventable. Use mosquito nets consistently, keep surroundings clean, and drink treated water.',
+    'Your community health worker is your first line of defence. Regular check-ins catch problems before they become crises.',
+    'Fever for more than 3 days, persistent cough, or unusual fatigue are warning signs. Seek health advice promptly.',
+    'Immunisation is among the most powerful preventive tools available. Keep all family members — especially children — up to date.',
+    'Anaemia is common in rural communities. Include iron-rich foods: dark leafy greens, beans, organ meat, and fish.',
+    'Maternal health is community health. Pregnant women must receive antenatal care starting in the first trimester.',
+    'Traditional remedies hold value — but they work best alongside, never instead of, proven healthcare interventions.'
+  ]}
+};
+
+document.addEventListener('DOMContentLoaded',()=>{
+  if(!Auth.guard())return;
+
+  renderPage('tips','Health Tips','35 evidence-based wellness tips across 5 categories',`
+  <div class="tips-container" style="display:grid;grid-template-columns:1fr 1fr;gap:20px;max-width:1100px">
+
+    <!-- LEFT: Generator -->
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <!-- Category selector -->
+      <div class="glass fade-up" style="padding:22px">
+        <h3 style="font-family:'Syne',sans-serif;font-size:15px;font-weight:700;margin-bottom:14px">Choose Category</h3>
+        <div class="cat-grid" id="cat-grid">
+          ${Object.entries(TIPS_DB).map(([k,v])=>`
+          <button class="cat-pill" data-cat="${k}">${v.emoji} ${v.label}</button>`).join('')}
+        </div>
+
+        <!-- Current tip card -->
+        <div class="tip-card" id="tip-card" style="min-height:130px;display:flex;align-items:center">
+          <div>
+            <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--em-light);margin-bottom:10px" id="tip-cat-label">💡 Health Tip</div>
+            <p style="font-size:15px;line-height:1.78;font-weight:500" id="tip-text">
+              <span class="typing-dots"><span></span><span></span><span></span></span>
+              <span style="margin-left:10px;font-size:13px;color:var(--muted)">Select a category above to begin</span>
+            </p>
+          </div>
+        </div>
+
+        <!-- Voice reading bar -->
+        <div style="margin-top:14px;display:none" id="voice-bar">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px">
+            <span style="font-size:11px;color:var(--em-light);font-weight:600">🔊 Reading aloud…</span>
+            <button onclick="stopReading()" style="font-size:11px;color:var(--muted);cursor:pointer;background:none;border:none">Stop</button>
+          </div>
+          <div class="reading-bar" id="reading-bar"></div>
+        </div>
+
+        <!-- Actions -->
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:16px">
+          <button id="btn-gen" class="btn btn-em" style="padding:10px">🔄 Generate</button>
+          <button id="btn-voice" class="btn btn-ghost" style="padding:10px">🔊 Read Aloud</button>
+          <button id="btn-save" class="btn btn-ghost" style="padding:10px">💾 Save</button>
+        </div>
+      </div>
+
+      <!-- Quick stat -->
+      <div class="glass-em fade-up d1" style="padding:18px;display:flex;align-items:center;gap:16px">
+        <div style="font-size:2.5rem">💡</div>
+        <div>
+          <div style="font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;color:var(--em-light)">35</div>
+          <div style="font-size:12px;color:var(--muted)">Evidence-based tips across 5 categories</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: Saved tips -->
+    <div class="glass fade-up d1" style="padding:22px;display:flex;flex-direction:column">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+        <h3 style="font-family:'Syne',sans-serif;font-size:15px;font-weight:700">Saved Tips</h3>
+        <button id="btn-clear" class="btn btn-ghost btn-sm" style="font-size:12px">Clear all</button>
+      </div>
+      <div id="saved-list" style="flex:1;overflow-y:auto;max-height:520px"></div>
+    </div>
+  </div>
+  `);
+
+  /* ── STATE ─────────────────────────────────────────────────── */
+  let currentCat='hydration';
+  let currentTip='';
+  let speaking=false;
+  let voiceTimer=null;
+
+  /* ── SET CATEGORY ──────────────────────────────────────────── */
+  function setCat(cat){
+    currentCat=cat;
+    document.querySelectorAll('.cat-pill').forEach(b=>b.classList.toggle('active',b.dataset.cat===cat));
+    const d=TIPS_DB[cat];
+    document.getElementById('tip-cat-label').textContent=`${d.emoji} ${d.label}`;
+    generateTip();
+  }
+
+  document.querySelectorAll('.cat-pill').forEach(btn=>{
+    btn.addEventListener('click',()=>setCat(btn.dataset.cat));
+  });
+
+  /* ── GENERATE ──────────────────────────────────────────────── */
+  function generateTip(){
+    const pool=TIPS_DB[currentCat].tips;
+    let t=pool[Math.floor(Math.random()*pool.length)];
+    currentTip=t;
+    const el=document.getElementById('tip-text');
+    document.getElementById('tip-card').style.opacity='.4';
+    setTimeout(()=>{
+      el.innerHTML=t;
+      document.getElementById('tip-card').style.opacity='1';
+    },220);
+  }
+
+  document.getElementById('btn-gen').addEventListener('click',generateTip);
+
+  /* ── READ ALOUD ────────────────────────────────────────────── */
+  window.stopReading=function(){
+    if(window.speechSynthesis)window.speechSynthesis.cancel();
+    clearInterval(voiceTimer);
+    document.getElementById('voice-bar').style.display='none';
+    document.getElementById('reading-bar').style.width='0%';
+    speaking=false;
+    document.getElementById('btn-voice').innerHTML='🔊 Read Aloud';
+  };
+
+  document.getElementById('btn-voice').addEventListener('click',()=>{
+    if(!currentTip){Toast.show('Generate a tip first!','warning');return}
+
+    if(speaking){stopReading();return}
+
+    if(!window.speechSynthesis){
+      Toast.show('Speech not supported in this browser. Try Chrome or Edge.','warning');return;
+    }
+    window.speechSynthesis.cancel();
+
+    const utter=new SpeechSynthesisUtterance(currentTip);
+
+    // Pick a good voice
+    const voices=window.speechSynthesis.getVoices();
+    const pref=voices.find(v=>v.lang.startsWith('en')&&v.name.includes('Google'))
+      ||voices.find(v=>v.lang.startsWith('en'))
+      ||voices[0];
+    if(pref)utter.voice=pref;
+    utter.rate=0.87;utter.pitch=1.05;utter.volume=1;
+
+    const bar=document.getElementById('reading-bar');
+    const barWrap=document.getElementById('voice-bar');
+    const words=currentTip.split(' ').length;
+    const estMs=(words/140)*60000/utter.rate;
+
+    utter.onstart=()=>{
+      speaking=true;
+      document.getElementById('btn-voice').innerHTML='⏹ Stop Reading';
+      barWrap.style.display='block';
+      bar.style.width='0%';
+      let elapsed=0;
+      voiceTimer=setInterval(()=>{
+        elapsed+=200;
+        bar.style.width=Math.min(98,elapsed/estMs*100)+'%';
+      },200);
+    };
+    utter.onend=utter.onerror=()=>{
+      stopReading();
+    };
+
+    window.speechSynthesis.speak(utter);
+    Toast.show('Reading aloud 🔊');
+  });
+
+  /* ── SAVE ──────────────────────────────────────────────────── */
+  document.getElementById('btn-save').addEventListener('click',()=>{
+    if(!currentTip){Toast.show('Generate a tip first!','warning');return}
+    Tips.add(currentTip,currentCat);
+    renderSaved();
+    Toast.show('Tip saved! 💾');
+  });
+
+  /* ── RENDER SAVED ──────────────────────────────────────────── */
+  function renderSaved(){
+    const list=Tips.all();
+    const el=document.getElementById('saved-list');
+    if(!list.length){
+      el.innerHTML='<div style="text-align:center;padding:40px 20px"><div style="font-size:3rem;opacity:.2;margin-bottom:10px">💾</div><div style="color:var(--muted);font-size:13px">No saved tips yet.<br/>Generate and save some above!</div></div>';
+      return;
+    }
+    el.innerHTML=list.map((s,i)=>{
+      const d=TIPS_DB[s.cat]||{emoji:'💡',label:s.cat,color:'var(--emerald)'};
+      return`<div class="saved-tip">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+          <span style="font-size:11px;font-weight:700;color:${d.color}">${d.emoji} ${d.label}</span>
+          <div style="display:flex;align-items:center;gap:8px">
+            <span style="font-size:10px;color:var(--text3)">${s.date}</span>
+            <button onclick="deleteTip(${i})" style="color:var(--text3);cursor:pointer;font-size:14px;background:none;border:none;line-height:1">×</button>
+          </div>
+        </div>
+        <p style="font-size:12px;color:var(--muted);line-height:1.6">${s.tip}</p>
+      </div>`;
+    }).join('');
+  }
+
+  window.deleteTip=function(i){
+    const list=Tips.all();list.splice(i,1);Store.set('g_saved_tips',list);renderSaved();Toast.show('Tip removed.','info');
+  };
+
+  document.getElementById('btn-clear').addEventListener('click',()=>{
+    Tips.clear();renderSaved();Toast.show('Saved tips cleared.','info');
+  });
+
+  // Reload voices after they load (needed in some browsers)
+  if(window.speechSynthesis){
+    window.speechSynthesis.onvoiceschanged=()=>{};
+    window.speechSynthesis.getVoices();
+  }
+
+  setCat('hydration');
+  renderSaved();
+});
+</script>
+</body></html>
