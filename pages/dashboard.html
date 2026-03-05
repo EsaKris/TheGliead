@@ -1,115 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
-  <!-- PRIMARY SEO (ENHANCED) -->
-  <title>Gilead Rural Health Dashboard — Wellness Hub for Communities</title>
-  <meta name="description" content="Central dashboard for Gilead rural health tools: BMI calculator, health tips, community analytics & emergency preparedness. Offline-first, privacy-focused." />
-  <meta name="keywords" content="rural health dashboard, community wellness hub, health tools offline, Gilead dashboard, population health management, village health worker tools" />
-  <meta name="author" content="Gilead Foundation" />
-  <meta name="robots" content="index, follow, max-image-preview:large" />
-  <link rel="canonical" href="https://thegilead.vercel.app/dashboard/" />
-  
-  <!-- OPEN GRAPH / SOCIAL (makes shared links look professional) -->
-  <meta property="og:title" content="Gilead Rural Health Dashboard" />
-  <meta property="og:description" content="Complete wellness toolkit for rural communities — all tools in one place, works offline." />
-  <meta property="og:image" content="https://thegilead.vercel.app/img/hero.png" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
-  <meta property="og:url" content="https://thegilead.vercel.app/dashboard/" />
-  <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="Gilead Rural Health" />
-  <meta property="og:locale" content="en_IN" />
-  
-  <!-- TWITTER CARD -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:site" content="@gilead_fdn" />
-  <meta name="twitter:title" content="Gilead Rural Health Dashboard" />
-  <meta name="twitter:description" content="Central hub for BMI tracking, health tips & community analytics" />
-  <meta name="twitter:image" content="https://thegilead.vercel.app/img/dashboard-twitter.jpg" />
-  
-  <!-- FAVICON (brand consistency) -->
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'><rect width='40' height='40' rx='10' fill='%23052e16'/><line x1='20' y1='8' x2='20' y2='32' stroke='%234ade80' stroke-width='3' stroke-linecap='round'/><line x1='8' y1='20' x2='32' y2='20' stroke='%234ade80' stroke-width='3' stroke-linecap='round'/></svg>" />
-  <link rel="apple-touch-icon" href="../img/apple-touch-icon.png" />
-  <meta name="theme-color" content="#052e16" />
-  
-  <!-- TAILWIND + FONTS -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz@14..32&family=Syne:wght@400..800&display=swap" rel="stylesheet" />
-  
-  <!-- MAIN CSS -->
-  <link rel="stylesheet" href="../css/main.css" />
-  
-  <!-- STRUCTURED DATA (Dashboard + CollectionPage) — tells search engines this is a hub for tools -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "CollectionPage",
-    "name": "Gilead Rural Health Dashboard",
-    "description": "Central access point for all Gilead health tools including BMI calculator, health tips, analytics, and emergency preparedness",
-    "url": "https://thegilead.vercel.app/dashboard/",
-    "isPartOf": {
-      "@type": "WebSite",
-      "name": "Gilead Rural Health",
-      "url": "https://thegilead.vercel.app/"
-    },
-    "mainEntity": {
-      "@type": "ItemList",
-      "itemListElement": [
-        {
-          "@type": "SoftwareApplication",
-          "name": "BMI Calculator",
-          "description": "Offline BMI screening tool",
-          "url": "https://thegilead.vercel.app/bmi-calculator/"
-        },
-        {
-          "@type": "Dataset",
-          "name": "Community Analytics",
-          "description": "Population health metrics",
-          "url": "https://thegilead.vercel.app/analytics/"
-        },
-        {
-          "@type": "Article",
-          "name": "Health Tips",
-          "description": "Daily wellness guidance"
-        },
-        {
-          "@type": "SoftwareApplication",
-          "name": "Emergency Simulator",
-          "description": "Disaster preparedness tool"
-        }
-      ]
-    }
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Dashboard — Gilead Health Connect | Personal Wellness Hub</title>
+
+<!-- PRIMARY SEO META TAGS (ENHANCED) -->
+<meta name="description" content="Your personal Gilead health dashboard. Track wellness scores, BMI history, access health tips, and monitor community analytics. Offline-first rural health platform." />
+<meta name="keywords" content="rural health dashboard, personal wellness tracker, BMI history, community health analytics, Gilead user dashboard, health assessment history, offline health tools" />
+<meta name="author" content="Gilead Foundation" />
+<meta name="robots" content="index, follow, max-image-preview:large" />
+<link rel="canonical" href="https://thegilead.vercel.app/dashboard.html" />
+
+<!-- OPEN GRAPH / SOCIAL MEDIA -->
+<meta property="og:title" content="Gilead Dashboard — Your Wellness Hub" />
+<meta property="og:description" content="Track your health journey with BMI history, wellness scores, and community analytics. Free, offline-first rural health platform." />
+<meta property="og:image" content="https://thegilead.vercel.app/img/dashboard-og.jpg" />
+<meta property="og:url" content="https://thegilead.vercel.app/dashboard.html" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Gilead Rural Health" />
+
+<!-- TWITTER CARD -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Gilead Health Dashboard" />
+<meta name="twitter:description" content="Personal wellness tracking for rural communities" />
+<meta name="twitter:image" content="https://thegilead.vercel.app/img/dashboard-twitter.jpg" />
+
+<!-- FAVICON (KEPT) -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'><rect width='40' height='40' rx='10' fill='%23052e16'/><line x1='20' y1='8' x2='20' y2='32' stroke='%234ade80' stroke-width='3' stroke-linecap='round'/><line x1='8' y1='20' x2='32' y2='20' stroke='%234ade80' stroke-width='3' stroke-linecap='round'/></svg>"/>
+
+<!-- TAILWIND & FONTS -->
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="../css/main.css"/>
+
+<!-- STRUCTURED DATA (SEO BOOST) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ProfilePage",
+  "name": "Gilead User Dashboard",
+  "description": "Personal wellness dashboard for rural health tracking",
+  "url": "https://thegilead.vercel.app/dashboard.html",
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "Gilead Rural Health",
+    "url": "https://thegilead.vercel.app/"
   }
-  </script>
-  
-  <!-- Organization structured data -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    "name": "Gilead Foundation",
-    "url": "https://thegilead.vercel.app/",
-    "logo": "https://thegilead.vercel.app/img/logo.png",
-    "sameAs": [
-      "https://twitter.com/gilead_fdn",
-      "https://facebook.com/gileadrural"
-    ]
-  }
-  </script>
-  
-  <!-- GEO TAGS (rural focus) -->
-  <meta name="geo.region" content="IN" />
-  <meta name="geo.placename" content="Rural India" />
-  
-  <!-- ADDITIONAL META -->
-  <meta name="application-name" content="Gilead Dashboard" />
-  <meta name="mobile-web-app-capable" content="yes" />
+}
+</script>
+
+<!-- GEO TAGS (RURAL FOCUS) -->
+<meta name="geo.region" content="IN" />
+<meta name="geo.placename" content="Rural India" />
 </head>
+<body>
+<script src="../js/shared.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded',()=>{
   if(!Auth.guard())return;
@@ -136,11 +80,11 @@ document.addEventListener('DOMContentLoaded',()=>{
 
   renderPage('overview','Dashboard Overview',fmtDate(),`
   <!-- HERO WELCOME -->
-  <div class="glass-em fade-up" style="padding:20px 16px;margin-bottom:24px;position:relative;overflow:hidden">
+  <div class="glass-em fade-up" style="padding:28px 32px;margin-bottom:24px;position:relative;overflow:hidden">
     <div class="orb" style="width:300px;height:300px;background:rgba(16,185,129,.05);right:-80px;top:-80px;animation-delay:0s"></div>
     <div style="position:relative;z-index:1">
       <div style="font-size:13px;color:var(--em-light);font-weight:600;margin-bottom:5px">Good day 🌿</div>
-      <h1 style="font-family:'Syne',sans-serif;font-size:clamp(1.5rem,5vw,1.9rem);font-weight:800;margin-bottom:10px">Welcome back, ${user.name.split(' ')[0]}!</h1>
+      <h1 style="font-family:'Syne',sans-serif;font-size:1.9rem;font-weight:800;margin-bottom:10px">Welcome back, ${user.name.split(' ')[0]}!</h1>
       <p style="color:var(--muted);font-size:14px;max-width:460px;line-height:1.72;margin-bottom:22px">Your wellness dashboard is ready. Take an assessment, explore health tips, or check community analytics.</p>
       <div style="display:flex;flex-wrap:wrap;gap:10px">
         <a href="wellness.html" class="btn btn-em btn-sm">📊 Run Assessment</a>
@@ -151,7 +95,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   </div>
 
   <!-- STAT CARDS -->
-  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:24px">
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin-bottom:24px">
     <div class="stat-card fade-up">
       <div class="stat-icon">💪</div>
       <div class="stat-label">Wellness Score</div>
@@ -178,10 +122,10 @@ document.addEventListener('DOMContentLoaded',()=>{
     </div>
   </div>
 
-  <div style="display:grid;grid-template-columns:1fr;gap:16px;margin-bottom:16px;@media(min-width:768px){grid-template-columns:2fr 1fr}">
+  <div style="display:grid;grid-template-columns:2fr 1fr;gap:16px;margin-bottom:16px">
     <!-- History -->
-    <div class="glass fade-up" style="padding:16px;@media(min-width:768px){padding:22px}">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;gap:10px">
+    <div class="glass fade-up" style="padding:22px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px">
         <h3 style="font-family:'Syne',sans-serif;font-size:16px;font-weight:700">Recent Assessments</h3>
         <a href="wellness.html" class="btn btn-ghost btn-sm">+ New</a>
       </div>
@@ -190,9 +134,9 @@ document.addEventListener('DOMContentLoaded',()=>{
 
     <!-- Community impact + emergency alert -->
     <div style="display:flex;flex-direction:column;gap:14px">
-      <div class="glass-em fade-up d1" style="padding:16px;@media(min-width:768px){padding:22px};text-align:center">
+      <div class="glass-em fade-up d1" style="padding:22px;text-align:center">
         <div style="font-size:11px;color:var(--em-light);font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px">Community Reach</div>
-        <div style="font-family:'Syne',sans-serif;font-size:clamp(2rem,8vw,3rem);font-weight:800;color:var(--em-light);line-height:1" data-count="12547">0</div>
+        <div style="font-family:'Syne',sans-serif;font-size:3rem;font-weight:800;color:var(--em-light);line-height:1" data-count="12547">0</div>
         <div style="font-size:12px;color:var(--muted);margin-top:6px">Users across rural zones</div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px">
           <div style="background:var(--surface);border-radius:var(--r-sm);padding:8px;text-align:center">
@@ -207,7 +151,7 @@ document.addEventListener('DOMContentLoaded',()=>{
       </div>
 
       <!-- Emergency quick access -->
-      <a href="emergency.html" class="fade-up d2" style="background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.18);border-radius:var(--r-lg);padding:16px;@media(min-width:768px){padding:20px};display:flex;align-items:center;gap:12px;@media(min-width:768px){gap:14px};cursor:pointer;text-decoration:none;transition:all .22s var(--ease);"
+      <a href="emergency.html" class="fade-up d2" style="background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.18);border-radius:var(--r-lg);padding:20px;display:flex;align-items:center;gap:14px;cursor:pointer;text-decoration:none;transition:all .22s var(--ease);"
         onmouseover="this.style.background='rgba(239,68,68,.12)'"
         onmouseout="this.style.background='rgba(239,68,68,.06)'">
         <div style="width:46px;height:46px;border-radius:50%;background:radial-gradient(circle,#f87171,#dc2626);display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 0 18px rgba(239,68,68,.4);animation:pulse-dot 2s infinite">
@@ -222,7 +166,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   </div>
 
   <!-- Quick actions -->
-  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px;@media(min-width:640px){grid-template-columns:repeat(3,1fr)};@media(min-width:1024px){grid-template-columns:repeat(6,1fr)}" class="fade-up d3">
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px" class="fade-up d3">
     ${[
       {href:'wellness.html',icon:'📊',label:'Wellness'},
       {href:'bmi.html',icon:'⚖️',label:'BMI Calc'},
@@ -230,7 +174,7 @@ document.addEventListener('DOMContentLoaded',()=>{
       {href:'location.html',icon:'📍',label:'Location'},
       {href:'qr.html',icon:'🎴',label:'QR Card'},
       {href:'analytics.html',icon:'📈',label:'Analytics'},
-    ].map(a=>`<a href="${a.href}" style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r-md);padding:12px;@media(min-width:768px){padding:14px};text-align:center;cursor:pointer;transition:all .22s var(--ease);display:block;text-decoration:none"
+    ].map(a=>`<a href="${a.href}" style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r-md);padding:14px;text-align:center;cursor:pointer;transition:all .22s var(--ease);display:block;text-decoration:none"
       onmouseover="this.style.borderColor='var(--border2)';this.style.background='var(--surface2)'"
       onmouseout="this.style.borderColor='var(--border)';this.style.background='var(--surface)'">
       <div style="font-size:1.5rem;margin-bottom:5px">${a.icon}</div>
@@ -240,4 +184,5 @@ document.addEventListener('DOMContentLoaded',()=>{
   `);
 });
 </script>
-</body></html>
+</body>
+</html>
