@@ -1,13 +1,115 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Dashboard — Gilead Health Connect</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<link rel="stylesheet" href="../css/main.css"/>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <!-- PRIMARY SEO (ENHANCED) -->
+  <title>Gilead Rural Health Dashboard — Wellness Hub for Communities</title>
+  <meta name="description" content="Central dashboard for Gilead rural health tools: BMI calculator, health tips, community analytics & emergency preparedness. Offline-first, privacy-focused." />
+  <meta name="keywords" content="rural health dashboard, community wellness hub, health tools offline, Gilead dashboard, population health management, village health worker tools" />
+  <meta name="author" content="Gilead Foundation" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://thegilead.vercel.app/dashboard/" />
+  
+  <!-- OPEN GRAPH / SOCIAL (makes shared links look professional) -->
+  <meta property="og:title" content="Gilead Rural Health Dashboard" />
+  <meta property="og:description" content="Complete wellness toolkit for rural communities — all tools in one place, works offline." />
+  <meta property="og:image" content="https://thegilead.vercel.app/img/hero.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:url" content="https://thegilead.vercel.app/dashboard/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Gilead Rural Health" />
+  <meta property="og:locale" content="en_IN" />
+  
+  <!-- TWITTER CARD -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@gilead_fdn" />
+  <meta name="twitter:title" content="Gilead Rural Health Dashboard" />
+  <meta name="twitter:description" content="Central hub for BMI tracking, health tips & community analytics" />
+  <meta name="twitter:image" content="https://thegilead.vercel.app/img/dashboard-twitter.jpg" />
+  
+  <!-- FAVICON (brand consistency) -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'><rect width='40' height='40' rx='10' fill='%23052e16'/><line x1='20' y1='8' x2='20' y2='32' stroke='%234ade80' stroke-width='3' stroke-linecap='round'/><line x1='8' y1='20' x2='32' y2='20' stroke='%234ade80' stroke-width='3' stroke-linecap='round'/></svg>" />
+  <link rel="apple-touch-icon" href="../img/apple-touch-icon.png" />
+  <meta name="theme-color" content="#052e16" />
+  
+  <!-- TAILWIND + FONTS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz@14..32&family=Syne:wght@400..800&display=swap" rel="stylesheet" />
+  
+  <!-- MAIN CSS -->
+  <link rel="stylesheet" href="../css/main.css" />
+  
+  <!-- STRUCTURED DATA (Dashboard + CollectionPage) — tells search engines this is a hub for tools -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": "Gilead Rural Health Dashboard",
+    "description": "Central access point for all Gilead health tools including BMI calculator, health tips, analytics, and emergency preparedness",
+    "url": "https://thegilead.vercel.app/dashboard/",
+    "isPartOf": {
+      "@type": "WebSite",
+      "name": "Gilead Rural Health",
+      "url": "https://thegilead.vercel.app/"
+    },
+    "mainEntity": {
+      "@type": "ItemList",
+      "itemListElement": [
+        {
+          "@type": "SoftwareApplication",
+          "name": "BMI Calculator",
+          "description": "Offline BMI screening tool",
+          "url": "https://thegilead.vercel.app/bmi-calculator/"
+        },
+        {
+          "@type": "Dataset",
+          "name": "Community Analytics",
+          "description": "Population health metrics",
+          "url": "https://thegilead.vercel.app/analytics/"
+        },
+        {
+          "@type": "Article",
+          "name": "Health Tips",
+          "description": "Daily wellness guidance"
+        },
+        {
+          "@type": "SoftwareApplication",
+          "name": "Emergency Simulator",
+          "description": "Disaster preparedness tool"
+        }
+      ]
+    }
+  }
+  </script>
+  
+  <!-- Organization structured data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Gilead Foundation",
+    "url": "https://thegilead.vercel.app/",
+    "logo": "https://thegilead.vercel.app/img/logo.png",
+    "sameAs": [
+      "https://twitter.com/gilead_fdn",
+      "https://facebook.com/gileadrural"
+    ]
+  }
+  </script>
+  
+  <!-- GEO TAGS (rural focus) -->
+  <meta name="geo.region" content="IN" />
+  <meta name="geo.placename" content="Rural India" />
+  
+  <!-- ADDITIONAL META -->
+  <meta name="application-name" content="Gilead Dashboard" />
+  <meta name="mobile-web-app-capable" content="yes" />
 </head>
-<body>
-<script src="../js/shared.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded',()=>{
   if(!Auth.guard())return;

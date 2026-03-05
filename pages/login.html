@@ -1,131 +1,460 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Sign In — Gilead Health Connect</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<link rel="stylesheet" href="../css/main.css"/>
-<style>
-.auth-grid{display:grid;min-height:100vh;grid-template-columns:1fr 1fr}
-.auth-left{
-  background:linear-gradient(160deg,#020c04 0%,#041a09 40%,#062112 100%);
-  position:relative;overflow:hidden;padding:48px 52px;
-  display:flex;flex-direction:column;justify-content:space-between;
-}
-.auth-right{
-  background:#050e08;display:flex;align-items:center;justify-content:center;
-  padding:48px 52px;position:relative;
-}
-.auth-right::before{
-  content:'';position:absolute;top:0;left:0;right:0;height:3px;
-  background:linear-gradient(90deg,transparent,var(--emerald),transparent);
-}
-.grid-lines{
-  position:absolute;inset:0;
-  background-image:linear-gradient(rgba(16,185,129,.04) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(16,185,129,.04) 1px,transparent 1px);
-  background-size:48px 48px;pointer-events:none;
-}
-@media(max-width:900px){.auth-grid{grid-template-columns:1fr}.auth-left{display:none}}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <!-- PRIMARY SEO (ENHANCED) -->
+  <title>Sign In — Gilead Rural Health Connect | Community Wellness Dashboard</title>
+  <meta name="description" content="Sign in to your Gilead rural health account. Access free wellness tools: BMI calculator, emergency simulator, health tips & community analytics. Secure, offline-first platform." />
+  <meta name="keywords" content="sign in, login, rural health account, community wellness login, Gilead dashboard access, health worker portal, offline health platform" />
+  <meta name="author" content="Gilead Foundation" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://thegilead.vercel.app/login.html" />
+  
+  <!-- OPEN GRAPH / SOCIAL -->
+  <meta property="og:title" content="Sign In — Gilead Rural Health Connect" />
+  <meta property="og:description" content="Access your free wellness dashboard: BMI tracking, emergency tools, health tips & community analytics." />
+  <meta property="og:image" content="https://thegilead.vercel.app/img/login-preview.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:url" content="https://thegilead.vercel.app/login.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Gilead Rural Health" />
+  <meta property="og:locale" content="en_IN" />
+  
+  <!-- TWITTER CARD -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@gilead_fdn" />
+  <meta name="twitter:title" content="Gilead — Sign In to Your Account" />
+  <meta name="twitter:description" content="Secure access to rural health tools and community dashboard." />
+  <meta name="twitter:image" content="https://thegilead.vercel.app/img/login-twitter.jpg" />
+  
+  <!-- FAVICON -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'><rect width='40' height='40' rx='10' fill='%23052e16'/><line x1='20' y1='8' x2='20' y2='32' stroke='%234ade80' stroke-width='3' stroke-linecap='round'/><line x1='8' y1='20' x2='32' y2='20' stroke='%234ade80' stroke-width='3' stroke-linecap='round'/></svg>" />
+  <link rel="apple-touch-icon" href="../img/apple-touch-icon.png" />
+  <meta name="theme-color" content="#052e16" />
+  
+  <!-- TAILWIND + FONTS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz@14..32&family=Syne:wght@400..800&display=swap" rel="stylesheet" />
+  
+  <!-- MAIN CSS -->
+  <link rel="stylesheet" href="../css/main.css" />
+  
+  <!-- STRUCTURED DATA (WebPage + Organization) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "Gilead Login",
+    "description": "Secure sign-in page for Gilead rural health platform",
+    "url": "https://thegilead.vercel.app/login.html",
+    "isPartOf": {
+      "@type": "WebSite",
+      "name": "Gilead Rural Health",
+      "url": "https://thegilead.vercel.app/"
+    },
+    "potentialAction": {
+      "@type": "Action",
+      "name": "Login to dashboard"
+    }
+  }
+  </script>
+  
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Gilead Foundation",
+    "url": "https://thegilead.vercel.app/",
+    "logo": "https://thegilead.vercel.app/img/logo.png",
+    "sameAs": [
+      "https://twitter.com/gilead_fdn",
+      "https://facebook.com/gileadrural"
+    ],
+    "description": "Humanitarian digital wellness platform for rural communities"
+  }
+  </script>
+  
+  <!-- GEO TAGS -->
+  <meta name="geo.region" content="IN" />
+  <meta name="geo.placename" content="Rural India" />
+  
+  <!-- ADDITIONAL META -->
+  <meta name="application-name" content="Gilead Login" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  
+  <style>
+    /* Fixed CSS variables and styling */
+    :root {
+      --emerald: #10b981;
+      --em-light: #34d399;
+      --em-dim: rgba(16, 185, 129, 0.15);
+      --muted: #94a3b8;
+      --text: #e2e8f0;
+      --text3: #64748b;
+      --surface2: #1e293b;
+      --border: #334155;
+      --border2: #334155;
+      --r-md: 12px;
+    }
+    
+    .auth-grid {
+      display: grid;
+      min-height: 100vh;
+      grid-template-columns: 1fr 1fr;
+    }
+    
+    .auth-left {
+      background: linear-gradient(160deg, #020c04 0%, #041a09 40%, #062112 100%);
+      position: relative;
+      overflow: hidden;
+      padding: 48px 52px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    
+    .auth-right {
+      background: #050e08;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 48px 52px;
+      position: relative;
+    }
+    
+    .auth-right::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, #10b981, transparent);
+    }
+    
+    .grid-lines {
+      position: absolute;
+      inset: 0;
+      background-image: 
+        linear-gradient(rgba(16, 185, 129, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(16, 185, 129, 0.04) 1px, transparent 1px);
+      background-size: 48px 48px;
+      pointer-events: none;
+    }
+    
+    @media (max-width: 900px) {
+      .auth-grid { grid-template-columns: 1fr; }
+      .auth-left { display: none; }
+    }
+    
+    /* Form styling */
+    .form-group { width: 100%; }
+    
+    .form-label {
+      display: block;
+      font-size: 12px;
+      font-weight: 500;
+      color: #cbd5e1;
+      margin-bottom: 5px;
+      letter-spacing: 0.02em;
+    }
+    
+    .form-input {
+      width: 100%;
+      background: #0f1a12;
+      border: 1px solid #2a3a2e;
+      border-radius: 10px;
+      padding: 12px 14px;
+      font-size: 14px;
+      color: #e2e8f0;
+      transition: all 0.2s;
+    }
+    
+    .form-input:focus {
+      outline: none;
+      border-color: #10b981;
+      box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
+    }
+    
+    .pw-wrap { position: relative; }
+    
+    .pw-eye {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: #94a3b8;
+      cursor: pointer;
+      padding: 5px;
+    }
+    
+    .btn-em {
+      background: #10b981;
+      color: #020c04;
+      font-weight: 600;
+      border: none;
+      border-radius: 10px;
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+    
+    .btn-em:hover {
+      background: #34d399;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+    }
+    
+    .btn-block { width: 100%; }
+    
+    .fade-up {
+      animation: fadeUp 0.5s ease forwards;
+      opacity: 0;
+    }
+    
+    .d1 { animation-delay: 0.1s; }
+    .d2 { animation-delay: 0.2s; }
+    .d3 { animation-delay: 0.3s; }
+    
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .tag {
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid #2a5a3a;
+      color: #34d399;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 30px;
+      display: inline-block;
+      letter-spacing: 0.03em;
+    }
+    
+    .logo-mark {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .logo-icon {
+      background: #10b981;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+    }
+    
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(60px);
+      z-index: 0;
+    }
+    
+    .alert-em {
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid #2a5a3a;
+      border-radius: 10px;
+      padding: 14px;
+      color: #e2e8f0;
+    }
+  </style>
 </head>
 <body>
-<div id="toasts"></div>
-<div class="auth-grid">
+  <!-- Toast container for notifications -->
+  <div id="toasts" style="position:fixed;top:20px;right:20px;z-index:9999;"></div>
+  
+  <div class="auth-grid">
+    <!-- LEFT VISUAL SECTION -->
+    <div class="auth-left">
+      <div class="grid-lines"></div>
+      <div class="orb" style="width:400px;height:400px;background:rgba(16,185,129,.06);top:-100px;right:-100px"></div>
+      <div class="orb" style="width:300px;height:300px;background:rgba(16,185,129,.04);bottom:50px;left:-80px;animation-delay:5s"></div>
 
-  <!-- LEFT VISUAL -->
-  <div class="auth-left">
-    <div class="grid-lines"></div>
-    <div class="orb" style="width:400px;height:400px;background:rgba(16,185,129,.06);top:-100px;right:-100px"></div>
-    <div class="orb" style="width:300px;height:300px;background:rgba(16,185,129,.04);bottom:50px;left:-80px;animation-delay:5s"></div>
-
-    <!-- Logo -->
-    <div class="logo-mark" style="position:relative;z-index:1">
-      <div class="logo-icon" style="width:44px;height:44px;border-radius:12px">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-      </div>
-      <div>
-        <div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:#fff">Gilead</div>
-        <div style="font-size:11px;color:var(--text3);letter-spacing:.1em;text-transform:uppercase">Rural Health Connect</div>
-      </div>
-    </div>
-
-    <!-- Content -->
-    <div style="position:relative;z-index:1">
-      <div style="font-size:11px;color:var(--em-light);font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:16px">Trusted by Communities</div>
-      <h1 style="font-family:'Syne',sans-serif;font-size:3rem;font-weight:800;color:#fff;line-height:1.12;margin-bottom:20px">Wellness<br/>Starts<br/><span style="color:var(--em-light)">Here.</span></h1>
-      <p style="color:var(--muted);font-size:16px;line-height:1.8;margin-bottom:40px;max-width:360px">Digital wellness tools built for rural communities — simple, free, and life-changing.</p>
-
-      <!-- Stats -->
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px">
-        <div style="background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:var(--r-md);padding:16px;text-align:center">
-          <div style="font-family:'Syne',sans-serif;font-size:1.6rem;font-weight:800;color:var(--em-light)">12K</div>
-          <div style="font-size:11px;color:var(--text3);margin-top:3px">Users</div>
+      <!-- Logo -->
+      <div class="logo-mark">
+        <div class="logo-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round">
+            <line x1="12" y1="5" x2="12" y2="19"/>
+            <line x1="5" y1="12" x2="19" y2="12"/>
+          </svg>
         </div>
-        <div style="background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:var(--r-md);padding:16px;text-align:center">
-          <div style="font-family:'Syne',sans-serif;font-size:1.6rem;font-weight:800;color:var(--em-light)">340</div>
-          <div style="font-size:11px;color:var(--text3);margin-top:3px">Villages</div>
-        </div>
-        <div style="background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:var(--r-md);padding:16px;text-align:center">
-          <div style="font-family:'Syne',sans-serif;font-size:1.6rem;font-weight:800;color:var(--em-light)">98%</div>
-          <div style="font-size:11px;color:var(--text3);margin-top:3px">Satisfied</div>
+        <div>
+          <div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:#fff">Gilead</div>
+          <div style="font-size:11px;color:#64748b;letter-spacing:.1em;text-transform:uppercase">Rural Health Connect</div>
         </div>
       </div>
-    </div>
-  </div>
 
-  <!-- RIGHT FORM -->
-  <div class="auth-right">
-    <div style="width:100%;max-width:380px">
-      <div class="fade-up" style="margin-bottom:32px">
-        <div class="tag" style="margin-bottom:16px">Prototype Demo Platform</div>
-        <h2 style="font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;margin-bottom:7px">Welcome back</h2>
-        <p style="color:var(--muted);font-size:14px">Sign in to your wellness dashboard.</p>
-      </div>
-
-      <!-- Demo hint -->
-      <div class="alert alert-em fade-up d1" style="margin-bottom:24px">
-        <div style="font-weight:700;margin-bottom:4px;font-size:12px">🔑 Demo Access</div>
-        <div style="font-size:12px">Email: <strong style="color:var(--em-light)">user@gilead.com</strong> · Password: <strong style="color:var(--em-light)">123456</strong></div>
-      </div>
-
-      <form id="login-form" class="fade-up d2" style="display:flex;flex-direction:column;gap:16px">
-        <div class="form-group">
-          <label class="form-label">Email Address</label>
-          <input type="email" id="l-email" class="form-input" placeholder="you@example.com" value="user@gilead.com" autocomplete="email"/>
+      <!-- Content -->
+      <div style="position:relative;z-index:1">
+        <div style="font-size:11px;color:#34d399;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:16px">
+          Trusted by Communities
         </div>
-        <div class="form-group">
-          <label class="form-label">Password</label>
-          <div class="pw-wrap">
-            <input type="password" id="l-pw" class="form-input" placeholder="Password" value="123456" style="padding-right:42px" autocomplete="current-password"/>
-            <button type="button" class="pw-eye" onclick="togglePw('l-pw')">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-            </button>
+        <h1 style="font-family:'Syne',sans-serif;font-size:3rem;font-weight:800;color:#fff;line-height:1.12;margin-bottom:20px">
+          Wellness<br/>Starts<br/><span style="color:#34d399">Here.</span>
+        </h1>
+        <p style="color:#94a3b8;font-size:16px;line-height:1.8;margin-bottom:40px;max-width:360px">
+          Digital wellness tools built for rural communities — simple, free, and life-changing.
+        </p>
+
+        <!-- Stats -->
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px">
+          <div style="background:rgba(255,255,255,.03);border:1px solid #334155;border-radius:12px;padding:16px;text-align:center">
+            <div style="font-family:'Syne',sans-serif;font-size:1.6rem;font-weight:800;color:#34d399">12K</div>
+            <div style="font-size:11px;color:#64748b;margin-top:3px">Users</div>
+          </div>
+          <div style="background:rgba(255,255,255,.03);border:1px solid #334155;border-radius:12px;padding:16px;text-align:center">
+            <div style="font-family:'Syne',sans-serif;font-size:1.6rem;font-weight:800;color:#34d399">340</div>
+            <div style="font-size:11px;color:#64748b;margin-top:3px">Villages</div>
+          </div>
+          <div style="background:rgba(255,255,255,.03);border:1px solid #334155;border-radius:12px;padding:16px;text-align:center">
+            <div style="font-family:'Syne',sans-serif;font-size:1.6rem;font-weight:800;color:#34d399">98%</div>
+            <div style="font-size:11px;color:#64748b;margin-top:3px">Satisfied</div>
           </div>
         </div>
-        <button type="submit" class="btn btn-em btn-block" style="padding:13px;margin-top:4px">Sign In →</button>
-      </form>
+      </div>
+    </div>
 
-      <p class="fade-up d3" style="text-align:center;margin-top:20px;font-size:13px;color:var(--muted)">
-        No account? <a href="register.html" style="color:var(--em-light);font-weight:600">Create one free →</a>
-      </p>
-      <p style="text-align:center;margin-top:10px;font-size:12px">
-        <a href="../index.html" style="color:var(--text3)">← Back to home</a>
-      </p>
+    <!-- RIGHT FORM SECTION -->
+    <div class="auth-right">
+      <div style="width:100%;max-width:380px">
+        <div class="fade-up" style="margin-bottom:32px">
+          <div class="tag" style="margin-bottom:16px">🔐 Prototype Demo Platform</div>
+          <h2 style="font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;margin-bottom:7px;color:#e2e8f0">Welcome back</h2>
+          <p style="color:#94a3b8;font-size:14px">Sign in to your wellness dashboard.</p>
+        </div>
+
+        <!-- Demo hint -->
+        <div class="alert-em fade-up d1" style="margin-bottom:24px">
+          <div style="font-weight:700;margin-bottom:4px;font-size:12px;color:#34d399">🔑 Demo Access</div>
+          <div style="font-size:12px;color:#cbd5e1">Email: <strong style="color:#34d399">user@gilead.com</strong> · Password: <strong style="color:#34d399">123456</strong></div>
+        </div>
+
+        <form id="login-form" class="fade-up d2" style="display:flex;flex-direction:column;gap:16px">
+          <div class="form-group">
+            <label class="form-label" for="l-email">Email Address</label>
+            <input type="email" id="l-email" class="form-input" placeholder="you@example.com" value="user@gilead.com" autocomplete="email" required />
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label" for="l-pw">Password</label>
+            <div class="pw-wrap">
+              <input type="password" id="l-pw" class="form-input" placeholder="Password" value="123456" style="padding-right:42px" autocomplete="current-password" required />
+              <button type="button" class="pw-eye" onclick="togglePassword('l-pw')" aria-label="Toggle password visibility">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                  <circle cx="12" cy="12" r="3"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+          
+          <button type="submit" class="btn-em btn-block" style="padding:13px;margin-top:4px;font-size:15px">
+            Sign In →
+          </button>
+        </form>
+
+        <p class="fade-up d3" style="text-align:center;margin-top:20px;font-size:13px;color:#94a3b8">
+          No account? <a href="register.html" style="color:#34d399;font-weight:600;text-decoration:none">Create one free →</a>
+        </p>
+        <p style="text-align:center;margin-top:10px;font-size:12px">
+          <a href="../index.html" style="color:#64748b;text-decoration:none">← Back to home</a>
+        </p>
+      </div>
     </div>
   </div>
-</div>
 
-<script src="../js/shared.js"></script>
-<script>
-document.addEventListener('DOMContentLoaded',()=>{
-  if(Auth.init())location.href='dashboard.html';
-  document.getElementById('login-form').addEventListener('submit',e=>{
-    e.preventDefault();
-    const r=Auth.login(document.getElementById('l-email').value,document.getElementById('l-pw').value);
-    if(r.ok){Toast.show(`Welcome back, ${r.user.name.split(' ')[0]}! 👋`,'success');setTimeout(()=>location.href='dashboard.html',600)}
-    else Toast.show(r.err,'error');
-  });
-});
-</script>
-</body></html>
+  <!-- Scripts -->
+  <script src="../js/shared.js"></script>
+  <script>
+    // Global toast object (fallback if not in shared.js)
+    window.Toast = window.Toast || {
+      show: function(message, type = 'info') {
+        alert(message); // Fallback if toast not available
+      }
+    };
+    
+    // Password visibility toggle
+    window.togglePassword = function(inputId) {
+      const input = document.getElementById(inputId);
+      if (input) {
+        input.type = input.type === 'password' ? 'text' : 'password';
+      }
+    };
+    
+    document.addEventListener('DOMContentLoaded', function() {
+      // Check if Auth exists and handle redirect
+      if (window.Auth && Auth.init) {
+        try {
+          if (Auth.init()) {
+            location.href = 'dashboard.html';
+          }
+        } catch (e) {
+          console.log('Auth init check failed:', e);
+        }
+      }
+      
+      // Form submission
+      const loginForm = document.getElementById('login-form');
+      if (loginForm) {
+        loginForm.addEventListener('submit', function(e) {
+          e.preventDefault();
+          
+          const email = document.getElementById('l-email')?.value || '';
+          const password = document.getElementById('l-pw')?.value || '';
+          
+          // Validate
+          if (!email || !password) {
+            if (window.Toast) Toast.show('Please enter email and password', 'error');
+            else alert('Please enter email and password');
+            return;
+          }
+          
+          // Call Auth.login if available
+          if (window.Auth && Auth.login) {
+            try {
+              const result = Auth.login(email, password);
+              if (result && result.ok) {
+                const firstName = result.user?.name?.split(' ')[0] || 'back';
+                if (window.Toast) Toast.show(`Welcome ${firstName}! 👋`, 'success');
+                setTimeout(() => location.href = 'dashboard.html', 600);
+              } else {
+                const errorMsg = (result && result.err) ? result.err : 'Invalid credentials';
+                if (window.Toast) Toast.show(errorMsg, 'error');
+                else alert(errorMsg);
+              }
+            } catch (e) {
+              console.error('Login error:', e);
+              if (window.Toast) Toast.show('Login failed', 'error');
+              else alert('Login failed');
+            }
+          } else {
+            // Fallback demo login
+            if (email === 'user@gilead.com' && password === '123456') {
+              if (window.Toast) Toast.show('Welcome back! 👋', 'success');
+              else alert('Welcome back!');
+              setTimeout(() => location.href = 'dashboard.html', 600);
+            } else {
+              if (window.Toast) Toast.show('Invalid credentials (try demo account)', 'error');
+              else alert('Invalid credentials (try demo account)');
+            }
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>

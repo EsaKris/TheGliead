@@ -1,10 +1,98 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>BMI Calculator — Gilead</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<link rel="stylesheet" href="../css/main.css"/>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <!-- PRIMARY SEO (ENHANCED) -->
+  <title>BMI Calculator for Rural Health — Gilead Free Offline Tool</title>
+  <meta name="description" content="Free, offline-first BMI calculator for rural communities. Check body mass index instantly — no internet required. Includes healthy weight range and nutrition guidance." />
+  <meta name="keywords" content="BMI calculator, rural health tool, body mass index, offline BMI, malnutrition screening, healthy weight calculator, Gilead health tool" />
+  <meta name="author" content="Gilead Foundation" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://thegilead.vercel.app/bmi-calculator/" />
+  
+  <!-- OPEN GRAPH / SOCIAL (makes shared links look professional) -->
+  <meta property="og:title" content="Gilead BMI Calculator — Free Rural Health Tool" />
+  <meta property="og:description" content="Simple, privacy-first BMI calculator that works offline. Perfect for community health workers in low-connectivity areas." />
+  <meta property="og:image" content="https://thegilead.vercel.app/img/bmi-tool-preview.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:url" content="https://thegilead.vercel.app/bmi-calculator/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Gilead Rural Health" />
+  
+  <!-- TWITTER CARD -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@gilead_fdn" />
+  <meta name="twitter:title" content="Gilead BMI Calculator" />
+  <meta name="twitter:description" content="Offline BMI tool for rural communities — instant results, no data upload." />
+  <meta name="twitter:image" content="https://thegilead.vercel.app/img/bmi-twitter.jpg" />
+  
+  <!-- FAVICON (brand consistency) -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'><rect width='40' height='40' rx='10' fill='%23052e16'/><line x1='20' y1='8' x2='20' y2='32' stroke='%234ade80' stroke-width='3' stroke-linecap='round'/><line x1='8' y1='20' x2='32' y2='20' stroke='%234ade80' stroke-width='3' stroke-linecap='round'/></svg>" />
+  
+  <!-- TAILWIND + FONTS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz@14..32&family=Syne:wght@400..800&display=swap" rel="stylesheet" />
+  
+  <!-- MAIN CSS -->
+  <link rel="stylesheet" href="../css/main.css" />
+  
+  <!-- STRUCTURED DATA (HowTo + MedicalWebPage) — helps BMI calculator appear as a tool in search) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to calculate your BMI",
+    "description": "Simple steps to calculate Body Mass Index using height and weight",
+    "step": [
+      {
+        "@type": "HowToStep",
+        "name": "Enter your height",
+        "text": "Input your height in centimeters"
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Enter your weight",
+        "text": "Input your weight in kilograms"
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Calculate BMI",
+        "text": "Click calculate to see your BMI and healthy weight range"
+      }
+    ],
+    "tool": {
+      "@type": "HowToTool",
+      "name": "BMI calculator"
+    }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "MedicalWebPage",
+    "name": "BMI Calculator for Rural Health",
+    "description": "Free offline BMI screening tool for community health workers",
+    "audience": "Rural communities, health workers in low-resource settings",
+    "about": {
+      "@type": "MedicalCondition",
+      "name": "Malnutrition"
+    }
+  }
+  </script>
+  
+  <!-- GEO TAGS (rural focus) -->
+  <meta name="geo.region" content="IN" />
+  <meta name="geo.placename" content="Rural India" />
+  
+  <!-- ADDITIONAL META FOR TOOL DISCOVERY -->
+  <meta name="application-name" content="Gilead BMI Calculator" />
+  <meta name="mobile-web-app-capable" content="yes" />
+</head>
 <style>
 .bmi-zone{padding:10px 14px;border-radius:var(--r-sm);display:flex;align-items:center;gap:10px;margin-bottom:6px;transition:all .22s}
 .bmi-zone.active{transform:translateX(6px)}

@@ -1,129 +1,524 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Create Account — Gilead Health Connect</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<link rel="stylesheet" href="../css/main.css"/>
-<style>
-.auth-grid{display:grid;min-height:100vh;grid-template-columns:1fr 1fr}
-.auth-right{background:linear-gradient(160deg,#020c04 0%,#041a09 40%,#062112 100%);position:relative;overflow:hidden;padding:48px 52px;display:flex;flex-direction:column;justify-content:center}
-.auth-left{background:#050e08;display:flex;align-items:center;justify-content:center;padding:48px 52px;position:relative}
-.auth-left::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,var(--emerald),transparent)}
-.grid-lines{position:absolute;inset:0;background-image:linear-gradient(rgba(16,185,129,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(16,185,129,.04) 1px,transparent 1px);background-size:48px 48px;pointer-events:none}
-@media(max-width:900px){.auth-grid{grid-template-columns:1fr}.auth-right{display:none}}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <!-- PRIMARY SEO (ENHANCED) -->
+  <title>Create Free Account — Gilead Rural Health Connect | Wellness Platform</title>
+  <meta name="description" content="Join Gilead's free rural health platform. Create your account to access BMI tracking, emergency tools, health tips & community analytics. No cost, offline-first, privacy protected." />
+  <meta name="keywords" content="create health account, rural wellness signup, free health platform registration, Gilead community join, offline health tools signup, village health worker account" />
+  <meta name="author" content="Gilead Foundation" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://thegilead.vercel.app/register.html" />
+  
+  <!-- OPEN GRAPH / SOCIAL -->
+  <meta property="og:title" content="Join Gilead — Free Rural Health Platform" />
+  <meta property="og:description" content="Create your free account for offline-first wellness tools: BMI calculator, emergency simulator, health tips & community analytics." />
+  <meta property="og:image" content="https://thegilead.vercel.app/img/register-preview.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:url" content="https://thegilead.vercel.app/register.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Gilead Rural Health" />
+  <meta property="og:locale" content="en_IN" />
+  
+  <!-- TWITTER CARD -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@gilead_fdn" />
+  <meta name="twitter:title" content="Gilead — Free Account Registration" />
+  <meta name="twitter:description" content="Join the community wellness platform. Free, offline-first health tools for rural areas." />
+  <meta name="twitter:image" content="https://thegilead.vercel.app/img/register-twitter.jpg" />
+  
+  <!-- FAVICON -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'><rect width='40' height='40' rx='10' fill='%23052e16'/><line x1='20' y1='8' x2='20' y2='32' stroke='%234ade80' stroke-width='3' stroke-linecap='round'/><line x1='8' y1='20' x2='32' y2='20' stroke='%234ade80' stroke-width='3' stroke-linecap='round'/></svg>" />
+  <link rel="apple-touch-icon" href="../img/apple-touch-icon.png" />
+  <meta name="theme-color" content="#052e16" />
+  
+  <!-- TAILWIND + FONTS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz@14..32&family=Syne:wght@400..800&display=swap" rel="stylesheet" />
+  
+  <!-- MAIN CSS -->
+  <link rel="stylesheet" href="../css/main.css" />
+  
+  <!-- STRUCTURED DATA (SignUpAction + WebPage) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "Create Gilead Account",
+    "description": "Free registration page for Gilead rural health platform",
+    "url": "https://thegilead.vercel.app/register.html",
+    "potentialAction": {
+      "@type": "SignUpAction",
+      "target": "https://thegilead.vercel.app/register.html",
+      "name": "Sign up for free health tools"
+    },
+    "isPartOf": {
+      "@type": "WebSite",
+      "name": "Gilead Rural Health",
+      "url": "https://thegilead.vercel.app/"
+    }
+  }
+  </script>
+  
+  <!-- Organization structured data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Gilead Foundation",
+    "url": "https://thegilead.vercel.app/",
+    "logo": "https://thegilead.vercel.app/img/logo.png",
+    "sameAs": [
+      "https://twitter.com/gilead_fdn",
+      "https://facebook.com/gileadrural"
+    ],
+    "description": "Humanitarian digital wellness platform for rural communities"
+  }
+  </script>
+  
+  <!-- GEO TAGS -->
+  <meta name="geo.region" content="IN" />
+  <meta name="geo.placename" content="Rural India" />
+  
+  <!-- ADDITIONAL META -->
+  <meta name="application-name" content="Gilead Registration" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  
+  <style>
+    /* Fixed CSS variables and styling */
+    :root {
+      --emerald: #10b981;
+      --em-light: #34d399;
+      --em-dim: rgba(16, 185, 129, 0.15);
+      --muted: #94a3b8;
+      --text: #e2e8f0;
+      --text3: #64748b;
+      --surface2: #1e293b;
+      --border2: #334155;
+    }
+    
+    .auth-grid {
+      display: grid;
+      min-height: 100vh;
+      grid-template-columns: 1fr 1fr;
+    }
+    
+    .auth-right {
+      background: linear-gradient(160deg, #020c04 0%, #041a09 40%, #062112 100%);
+      position: relative;
+      overflow: hidden;
+      padding: 48px 52px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    
+    .auth-left {
+      background: #050e08;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 48px 52px;
+      position: relative;
+    }
+    
+    .auth-left::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, #10b981, transparent);
+    }
+    
+    .grid-lines {
+      position: absolute;
+      inset: 0;
+      background-image: 
+        linear-gradient(rgba(16, 185, 129, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(16, 185, 129, 0.04) 1px, transparent 1px);
+      background-size: 48px 48px;
+      pointer-events: none;
+    }
+    
+    @media (max-width: 900px) {
+      .auth-grid { grid-template-columns: 1fr; }
+      .auth-right { display: none; }
+    }
+    
+    /* Form styling */
+    .form-group { width: 100%; }
+    
+    .form-label {
+      display: block;
+      font-size: 12px;
+      font-weight: 500;
+      color: #cbd5e1;
+      margin-bottom: 5px;
+      letter-spacing: 0.02em;
+    }
+    
+    .form-input {
+      width: 100%;
+      background: #0f1a12;
+      border: 1px solid #2a3a2e;
+      border-radius: 10px;
+      padding: 12px 14px;
+      font-size: 14px;
+      color: #e2e8f0;
+      transition: all 0.2s;
+    }
+    
+    .form-input:focus {
+      outline: none;
+      border-color: #10b981;
+      box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
+    }
+    
+    .pw-wrap { position: relative; }
+    
+    .pw-eye {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: #94a3b8;
+      cursor: pointer;
+      padding: 5px;
+    }
+    
+    .btn-em {
+      background: #10b981;
+      color: #020c04;
+      font-weight: 600;
+      border: none;
+      border-radius: 10px;
+      transition: all 0.2s;
+    }
+    
+    .btn-em:hover {
+      background: #34d399;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+    }
+    
+    .btn-block { width: 100%; }
+    
+    .fade-up {
+      animation: fadeUp 0.5s ease forwards;
+      opacity: 0;
+    }
+    
+    .d1 { animation-delay: 0.1s; }
+    .d2 { animation-delay: 0.2s; }
+    
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .tag {
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid #2a5a3a;
+      color: #34d399;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 30px;
+      display: inline-block;
+      letter-spacing: 0.03em;
+    }
+    
+    .logo-mark {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    .logo-icon {
+      background: #10b981;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(60px);
+      z-index: 0;
+    }
+  </style>
 </head>
 <body>
-<div id="toasts"></div>
-<div class="auth-grid">
+  <!-- Toast container for notifications -->
+  <div id="toasts" style="position:fixed;top:20px;right:20px;z-index:9999;"></div>
+  
+  <div class="auth-grid">
+    <!-- LEFT FORM SECTION -->
+    <div class="auth-left">
+      <div style="width:100%;max-width:380px">
+        <div class="fade-up" style="margin-bottom:28px">
+          <div class="tag" style="margin-bottom:16px">✨ Free Forever</div>
+          <h1 style="font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;margin-bottom:7px;color:#e2e8f0">
+            Join the Community
+          </h1>
+          <p style="color:#94a3b8;font-size:14px">Create your wellness account in seconds — no cost, no cloud.</p>
+        </div>
 
-  <!-- LEFT FORM -->
-  <div class="auth-left">
-    <div style="width:100%;max-width:380px">
-      <div class="fade-up" style="margin-bottom:28px">
-        <div class="tag" style="margin-bottom:16px">Free Forever</div>
-        <h2 style="font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;margin-bottom:7px">Join the Community</h2>
-        <p style="color:var(--muted);font-size:14px">Create your wellness account in seconds.</p>
+        <form id="reg-form" class="fade-up d1" style="display:flex;flex-direction:column;gap:14px">
+          <div class="form-group">
+            <label class="form-label" for="r-name">Full Name</label>
+            <input type="text" id="r-name" class="form-input" placeholder="Your full name" autocomplete="name" required />
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label" for="r-email">Email Address</label>
+            <input type="email" id="r-email" class="form-input" placeholder="you@example.com" autocomplete="email" required />
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label" for="r-pw">Password</label>
+            <div class="pw-wrap">
+              <input type="password" id="r-pw" class="form-input" placeholder="Min. 6 characters" style="padding-right:42px" autocomplete="new-password" required />
+              <button type="button" class="pw-eye" onclick="togglePassword('r-pw')" aria-label="Toggle password visibility">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                  <circle cx="12" cy="12" r="3"/>
+                </svg>
+              </button>
+            </div>
+            <!-- Password strength bar -->
+            <div style="height:3px;background:#1e293b;border-radius:99px;margin-top:6px;overflow:hidden">
+              <div id="pw-bar" style="height:100%;width:0;border-radius:99px;transition:all .3s;background:#10b981"></div>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label" for="r-confirm">Confirm Password</label>
+            <input type="password" id="r-confirm" class="form-input" placeholder="Repeat password" autocomplete="new-password" required />
+          </div>
+          
+          <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;margin-top:4px">
+            <input type="checkbox" id="r-terms" style="accent-color:#10b981;margin-top:2px;flex-shrink:0" required />
+            <span style="font-size:12px;color:#94a3b8;line-height:1.55">
+              I understand this is a <strong style="color:#e2e8f0">prototype platform</strong> and does not provide real medical advice or emergency services.
+            </span>
+          </label>
+          
+          <button type="submit" class="btn-em btn-block" style="padding:13px;margin-top:4px;font-size:15px">
+            Create Free Account →
+          </button>
+        </form>
+
+        <p class="fade-up d2" style="text-align:center;margin-top:18px;font-size:13px;color:#94a3b8">
+          Already have an account? <a href="login.html" style="color:#34d399;font-weight:600;text-decoration:none">Sign in →</a>
+        </p>
+        <p style="text-align:center;margin-top:8px;font-size:12px">
+          <a href="../index.html" style="color:#64748b;text-decoration:none">← Back to home</a>
+        </p>
       </div>
+    </div>
 
-      <form id="reg-form" class="fade-up d1" style="display:flex;flex-direction:column;gap:14px">
-        <div class="form-group">
-          <label class="form-label">Full Name</label>
-          <input type="text" id="r-name" class="form-input" placeholder="Your full name" autocomplete="name"/>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Email Address</label>
-          <input type="email" id="r-email" class="form-input" placeholder="you@example.com" autocomplete="email"/>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Password</label>
-          <div class="pw-wrap">
-            <input type="password" id="r-pw" class="form-input" placeholder="Min. 6 characters" style="padding-right:42px" autocomplete="new-password"/>
-            <button type="button" class="pw-eye" onclick="togglePw('r-pw')">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-            </button>
+    <!-- RIGHT VISUAL SECTION -->
+    <div class="auth-right">
+      <div class="grid-lines"></div>
+      <div class="orb" style="width:380px;height:380px;background:rgba(16,185,129,.05);top:-60px;left:-80px"></div>
+
+      <div style="position:relative;z-index:1">
+        <div class="logo-mark" style="margin-bottom:40px">
+          <div class="logo-icon" style="width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round">
+              <line x1="12" y1="5" x2="12" y2="19"/>
+              <line x1="5" y1="12" x2="19" y2="12"/>
+            </svg>
           </div>
-          <!-- Strength bar -->
-          <div style="height:3px;background:var(--surface2);border-radius:99px;margin-top:6px;overflow:hidden">
-            <div id="pw-bar" style="height:100%;width:0;border-radius:99px;transition:all .3s;background:var(--emerald)"></div>
+          <div>
+            <div style="font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:#fff">Gilead</div>
+            <div style="font-size:10px;color:#64748b;letter-spacing:.1em;text-transform:uppercase">Health Connect</div>
           </div>
         </div>
-        <div class="form-group">
-          <label class="form-label">Confirm Password</label>
-          <input type="password" id="r-confirm" class="form-input" placeholder="Repeat password" autocomplete="new-password"/>
-        </div>
-        <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;margin-top:4px">
-          <input type="checkbox" id="r-terms" style="accent-color:var(--emerald);margin-top:2px;flex-shrink:0"/>
-          <span style="font-size:12px;color:var(--muted);line-height:1.55">I understand this is a <strong style="color:var(--text)">prototype platform</strong> and does not provide real medical advice or emergency services.</span>
-        </label>
-        <button type="submit" class="btn btn-em btn-block" style="padding:13px;margin-top:4px">Create Free Account →</button>
-      </form>
+        
+        <h2 style="font-family:'Syne',sans-serif;font-size:2.2rem;font-weight:800;color:#fff;line-height:1.2;margin-bottom:12px">
+          Everything You<br/><span style="color:#34d399">Need. Free.</span>
+        </h2>
+        <p style="color:#94a3b8;font-size:15px;margin-bottom:32px;line-height:1.72">
+          Your account unlocks a complete digital wellness suite built for communities that need it most.
+        </p>
 
-      <p class="fade-up d2" style="text-align:center;margin-top:18px;font-size:13px;color:var(--muted)">
-        Already have one? <a href="login.html" style="color:var(--em-light);font-weight:600">Sign in →</a>
-      </p>
-      <p style="text-align:center;margin-top:8px;font-size:12px">
-        <a href="../index.html" style="color:var(--text3)">← Back to home</a>
-      </p>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <!-- Feature list dynamically generated but fixed the syntax -->
+          <div style="display:flex;align-items:center;gap:12px">
+            <div style="width:28px;height:28px;border-radius:50%;background:rgba(16,185,129,.15);border:1px solid #334155;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="3" stroke-linecap="round">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+            </div>
+            <span style="font-size:14px;color:rgba(240,253,244,.75)">📊 Wellness & BMI Assessment Tools</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px">
+            <div style="width:28px;height:28px;border-radius:50%;background:rgba(16,185,129,.15);border:1px solid #334155;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="3" stroke-linecap="round">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+            </div>
+            <span style="font-size:14px;color:rgba(240,253,244,.75)">🚨 Emergency Response Simulator</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px">
+            <div style="width:28px;height:28px;border-radius:50%;background:rgba(16,185,129,.15);border:1px solid #334155;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="3" stroke-linecap="round">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+            </div>
+            <span style="font-size:14px;color:rgba(240,253,244,.75)">💡 Voice-Enabled Health Tips Library</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px">
+            <div style="width:28px;height:28px;border-radius:50%;background:rgba(16,185,129,.15);border:1px solid #334155;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="3" stroke-linecap="round">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+            </div>
+            <span style="font-size:14px;color:rgba(240,253,244,.75)">📍 GPS Location & Nearby Facilities</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px">
+            <div style="width:28px;height:28px;border-radius:50%;background:rgba(16,185,129,.15);border:1px solid #334155;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="3" stroke-linecap="round">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+            </div>
+            <span style="font-size:14px;color:rgba(240,253,244,.75)">🎴 Downloadable QR Health Card</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px">
+            <div style="width:28px;height:28px;border-radius:50%;background:rgba(16,185,129,.15);border:1px solid #334155;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="3" stroke-linecap="round">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+            </div>
+            <span style="font-size:14px;color:rgba(240,253,244,.75)">📈 Community Analytics Dashboard</span>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
-  <!-- RIGHT VISUAL -->
-  <div class="auth-right">
-    <div class="grid-lines"></div>
-    <div class="orb" style="width:380px;height:380px;background:rgba(16,185,129,.05);top:-60px;left:-80px"></div>
-
-    <div style="position:relative;z-index:1">
-      <div class="logo-mark" style="margin-bottom:40px">
-        <div class="logo-icon" style="width:44px;height:44px;border-radius:12px">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-        </div>
-        <div>
-          <div style="font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:#fff">Gilead</div>
-          <div style="font-size:10px;color:var(--text3);letter-spacing:.1em;text-transform:uppercase">Health Connect</div>
-        </div>
-      </div>
-      <h2 style="font-family:'Syne',sans-serif;font-size:2.2rem;font-weight:800;color:#fff;line-height:1.2;margin-bottom:12px">Everything You<br/><span style="color:var(--em-light)">Need. Free.</span></h2>
-      <p style="color:var(--muted);font-size:15px;margin-bottom:32px;line-height:1.72">Your account unlocks a complete digital wellness suite built for communities that need it most.</p>
-
-      <div style="display:flex;flex-direction:column;gap:12px">
-        ${['📊 Wellness & BMI Assessment Tools','🚨 Emergency Response Simulator','💡 Voice-Enabled Health Tips Library','📍 GPS Location & Nearby Facilities','🎴 Downloadable QR Health Card','📈 Community Analytics Dashboard'].map(t=>`
-        <div style="display:flex;align-items:center;gap:12px">
-          <div style="width:28px;height:28px;border-radius:50%;background:var(--em-dim);border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;flex-shrink:0">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--em-light)" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
-          </div>
-          <span style="font-size:14px;color:rgba(240,253,244,.75)">${t}</span>
-        </div>`).join('')}
-      </div>
-    </div>
-  </div>
-</div>
-
-<script src="../js/shared.js"></script>
-<script>
-document.addEventListener('DOMContentLoaded',()=>{
-  if(Auth.init())location.href='dashboard.html';
-  document.getElementById('r-pw').addEventListener('input',function(){
-    const v=this.value;const bar=document.getElementById('pw-bar');
-    let w=0;let c='#ef4444';
-    if(v.length>=6){w=33;c='#ef4444'}
-    if(v.length>=8){w=66;c='#f59e0b'}
-    if(v.length>=10&&/[A-Z]/.test(v)&&/\d/.test(v)){w=100;c='#10b981'}
-    bar.style.width=w+'%';bar.style.background=c;
-  });
-  document.getElementById('reg-form').addEventListener('submit',e=>{
-    e.preventDefault();
-    if(!document.getElementById('r-terms').checked){Toast.show('Please accept the terms.','warning');return}
-    const r=Auth.register(
-      document.getElementById('r-name').value,
-      document.getElementById('r-email').value,
-      document.getElementById('r-pw').value,
-      document.getElementById('r-confirm').value
-    );
-    if(r.ok){Toast.show(`Welcome, ${r.user.name.split(' ')[0]}! 🌿`);setTimeout(()=>location.href='dashboard.html',600)}
-    else Toast.show(r.err,'error');
-  });
-});
-</script>
-</body></html>
+  <!-- Scripts -->
+  <script src="../js/shared.js"></script>
+  <script>
+    // Global toast object (if not in shared.js)
+    window.Toast = window.Toast || {
+      show: function(message, type = 'info') {
+        alert(message); // Fallback if toast not available
+      }
+    };
+    
+    // Password visibility toggle
+    window.togglePassword = function(inputId) {
+      const input = document.getElementById(inputId);
+      if (input) {
+        input.type = input.type === 'password' ? 'text' : 'password';
+      }
+    };
+    
+    document.addEventListener('DOMContentLoaded', function() {
+      // Check if Auth exists and handle redirect
+      if (window.Auth && Auth.init) {
+        if (Auth.init()) location.href = 'dashboard.html';
+      }
+      
+      // Password strength meter
+      const pwInput = document.getElementById('r-pw');
+      const pwBar = document.getElementById('pw-bar');
+      
+      if (pwInput && pwBar) {
+        pwInput.addEventListener('input', function() {
+          const val = this.value;
+          let width = 0;
+          let color = '#ef4444'; // red
+          
+          if (val.length >= 6) {
+            width = 33;
+            color = '#ef4444'; // red
+          }
+          if (val.length >= 8) {
+            width = 66;
+            color = '#f59e0b'; // orange
+          }
+          if (val.length >= 10 && /[A-Z]/.test(val) && /\d/.test(val)) {
+            width = 100;
+            color = '#10b981'; // green
+          }
+          
+          pwBar.style.width = width + '%';
+          pwBar.style.background = color;
+        });
+      }
+      
+      // Form submission
+      const regForm = document.getElementById('reg-form');
+      if (regForm) {
+        regForm.addEventListener('submit', function(e) {
+          e.preventDefault();
+          
+          const termsCheck = document.getElementById('r-terms');
+          if (!termsCheck || !termsCheck.checked) {
+            if (window.Toast) Toast.show('Please accept the terms to continue.', 'warning');
+            else alert('Please accept the terms to continue.');
+            return;
+          }
+          
+          // Get form values
+          const name = document.getElementById('r-name')?.value || '';
+          const email = document.getElementById('r-email')?.value || '';
+          const password = document.getElementById('r-pw')?.value || '';
+          const confirm = document.getElementById('r-confirm')?.value || '';
+          
+          // Validate
+          if (!name || !email || !password || !confirm) {
+            if (window.Toast) Toast.show('Please fill all fields', 'error');
+            else alert('Please fill all fields');
+            return;
+          }
+          
+          if (password !== confirm) {
+            if (window.Toast) Toast.show('Passwords do not match', 'error');
+            else alert('Passwords do not match');
+            return;
+          }
+          
+          if (password.length < 6) {
+            if (window.Toast) Toast.show('Password must be at least 6 characters', 'error');
+            else alert('Password must be at least 6 characters');
+            return;
+          }
+          
+          // Call Auth.register if available
+          if (window.Auth && Auth.register) {
+            const result = Auth.register(name, email, password, confirm);
+            if (result && result.ok) {
+              if (window.Toast) Toast.show(`Welcome, ${result.user?.name?.split(' ')[0] || ''}! 🌿`);
+              setTimeout(() => location.href = 'dashboard.html', 600);
+            } else {
+              const errorMsg = (result && result.err) ? result.err : 'Registration failed';
+              if (window.Toast) Toast.show(errorMsg, 'error');
+              else alert(errorMsg);
+            }
+          } else {
+            // Fallback if Auth not available
+            if (window.Toast) Toast.show('Registration successful (demo mode)', 'success');
+            else alert('Registration successful (demo mode)');
+            setTimeout(() => location.href = 'dashboard.html', 600);
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>
